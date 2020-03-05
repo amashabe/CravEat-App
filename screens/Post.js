@@ -6,6 +6,11 @@ import UploadImage from "../components/UploadImage";
 import styles from '../styles'
 
 class Post extends React.Component {
+    _onUploadPost = () => {
+        this.props.uploadPost();
+        this.props.navigation.navigate('Home')
+    }
+
   render() {
     return (
       <View style={styles.container}>
@@ -23,7 +28,7 @@ class Post extends React.Component {
               placeholder='Recipe'
           />
           <UploadImage />
-      	<TouchableOpacity style={styles.button} onPress={this.props.uploadPost}>
+      	<TouchableOpacity style={styles.button} onPress={() => this._onUploadPost()}>
       		<Text>Post</Text>
       	</TouchableOpacity>
       </View>

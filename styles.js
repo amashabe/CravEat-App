@@ -13,7 +13,8 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   },
   button: {
     marginTop: 20,

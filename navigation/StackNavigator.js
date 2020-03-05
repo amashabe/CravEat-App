@@ -18,6 +18,16 @@ export const HomeNavigator = createAppContainer(createStackNavigator(
   }
 ));
 
+HomeNavigator.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true
+    if (navigation.state.routes.some(route => route.routeName === 'Map')) {
+        tabBarVisible = false
+    }
+    return {
+        tabBarVisible,
+    }
+}
+
 export const SearchNavigator = createAppContainer(createStackNavigator(
   {
     Search: { 

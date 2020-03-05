@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
-import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_UPLOAD_IMAGE} from '../types';
+import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_UPLOAD_IMAGE,UPDATE_LOCATION} from '../types';
 
 export const updateDescription = (text) => {
 	return {type: UPDATE_DESCRIPTION, payload: text}
@@ -12,6 +12,10 @@ export const updateRecipe = (text) => {
 
 export const updatePostPhoto = (text) => {
 	return {type: UPDATE_UPLOAD_IMAGE, payload: text}
+}
+
+export const updateLocation = (text) => {
+	return {type: UPDATE_LOCATION, payload: text}
 }
 
 export const getDownloadUrl = (url) => async (dispatch) => {
