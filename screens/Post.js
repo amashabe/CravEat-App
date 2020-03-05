@@ -1,11 +1,47 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import { updateDescription, uploadPost, updateRecipe } from '../actions/post'
-import { Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import * as Location from 'expo-location';
+import { updateDescription, uploadPost, updateRecipe, updateLocation } from '../actions/post'
+import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 import UploadImage from "../components/UploadImage";
-import styles from '../styles'
+import * as Permissions from 'expo-permissions';
+import styles from '../styles';
+const GOOGLE_API = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+const googleApiKey = 'AIzaSyAgjhZeIV4iIBe4cDyudFsyVGgVFK3P38U';
 
 class Post extends React.Component {
+    state = {
+        showModal: false,
+        locations: []
+    }
+
+    setLocation = (location) => {
+        const place = {
+            name: location.name,
+            coords: {
+                lat: location.geometry.location.lat,
+                lng: location.geometry.location.lng
+            }
+        }
+        this.setState({ showModal: false })
+        this.props.updateLocation(place)
+    }
+
+    getLocations = async () => {
+        this.setState({ showModal: true })
+        const permission = await Permissions.askAsync(Permissions.LOCATION)
+        if (permission.status === 'granted') {
+            console.log(permission)
+            const location = await Location.getCurrentPositionAsync()
+            console.log(location)
+            const url = `${GOOGLE_API}?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&key=${googleApiKey}`
+            const response = await fetch(url)
+            const data = await response.json()
+            this.setState({ locations: data.results })
+            console.log( data )
+        }
+    }
+
     _onUploadPost = () => {
         this.props.uploadPost();
         this.props.navigation.navigate('Home')
@@ -14,6 +50,19 @@ class Post extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+          <Modal animationType='slide' transparent={false} visible={this.state.showModal}>
+              <SafeAreaView style={[styles.container, styles.center]}>
+                  <FlatList
+                      keyExtractor={(item) => item.id}
+                      data={this.state.locations}
+                      renderItem={({ item }) => (
+                          <TouchableOpacity style={styles.border} onPress={() => this.setLocation(item)}>
+                              <Text style={styles.gray}>{item.name}</Text>
+                              <Text style={styles.gray}>{item.vicinity}</Text>
+                          </TouchableOpacity>
+                      )}/>
+              </SafeAreaView>
+          </Modal>
           <Image style={styles.postPhoto} source={{uri: this.props.post.photo }}/>
         <TextInput
         	style={styles.border}
@@ -28,6 +77,9 @@ class Post extends React.Component {
               placeholder='Recipe'
           />
           <UploadImage />
+          <TouchableOpacity style={styles.border} onPress={this.getLocations}>
+              <Text style={styles.gray}>{this.props.post.location ? this.props.post.location.name : 'Add a Location'}</Text>
+          </TouchableOpacity>
       	<TouchableOpacity style={styles.button} onPress={() => this._onUploadPost()}>
       		<Text>Post</Text>
       	</TouchableOpacity>
@@ -43,4 +95,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { updateDescription, uploadPost, updateRecipe })(Post)
+export default connect(mapStateToProps, { updateDescription, uploadPost, updateRecipe, updateLocation })(Post)

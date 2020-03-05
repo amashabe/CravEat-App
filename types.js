@@ -9,3 +9,4 @@ export const SIGN_OUT = 'SIGN_OUT';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const UPDATE_UPLOAD_IMAGE = 'UPDATE_UPLOAD_IMAGE';
 export const UPDATE_LOCATION = 'UPDATE_LOCATION';
+export const DOWNLOAD_URL = 'DOWNLOAD_URL';

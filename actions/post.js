@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
-import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_UPLOAD_IMAGE,UPDATE_LOCATION} from '../types';
+import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_UPLOAD_IMAGE,UPDATE_LOCATION, DOWNLOAD_URL} from '../types';
 
 export const updateDescription = (text) => {
 	return {type: UPDATE_DESCRIPTION, payload: text}
@@ -18,9 +18,10 @@ export const updateLocation = (text) => {
 	return {type: UPDATE_LOCATION, payload: text}
 }
 
-export const getDownloadUrl = (url) => async (dispatch) => {
+export const getDownloadUrl = () => async (dispatch, getState) => {
 	try {
-		const respond = await fetch(url);
+		const { post } = getState();
+		const respond = await fetch(post.photo);
 		const file = await respond.blob();
 		const newPostKey = firebase.database().ref().child('posts').push().key;
 		const metadata = { contentType: 'image/jpeg' };
@@ -31,7 +32,7 @@ export const getDownloadUrl = (url) => async (dispatch) => {
 				console.log(error)
 			}, () => {
 				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-					dispatch({type: UPDATE_UPLOAD_IMAGE, payload: downloadURL})
+					dispatch({type: DOWNLOAD_URL, payload: downloadURL})
 					}
 				);
 			});
@@ -43,15 +44,17 @@ export const getDownloadUrl = (url) => async (dispatch) => {
 
 export const uploadPost = () => async (dispatch, getState) => {
 		try {
+			dispatch(getDownloadUrl())
 			const { post, user } = getState();
-			dispatch(getDownloadUrl(post.photo))
 			const upload = {
-				postPhoto: post.photo,
+				postPhoto: post.downloadURL,
 				postDescription: post.description,
 				uid: user.uid,
 				photo: user.photo,
 				username: user.username,
-				postRecipe: post.recipe
+				postRecipe: post.recipe,
+				postLocation: post.location,
+				createdAt: new Date().toISOString()
 			}
 			const ref = await db.collection('posts').doc()
 			upload.id = ref.id
