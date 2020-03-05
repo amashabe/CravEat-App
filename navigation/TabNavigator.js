@@ -1,27 +1,23 @@
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
-import Home from '../screens/Home';
-import Activity from "../screens/Activity";
-import Post from "../screens/Post";
-import Search from "../screens/Search";
-import Profile from "../screens/Profile";
+import {HomeNavigator,ActivityNavigator,PostNavigator,ProfileNavigator,SearchNavigator} from './StackNavigator';
 
 export default createAppContainer(createBottomTabNavigator(
     {
                 Home: {
-                    screen: Home
+                    screen: HomeNavigator
                 },
                 Search: {
-                    screen: Search
+                    screen: SearchNavigator
                 },
                 Post: {
-                    screen: Post
+                    screen: PostNavigator
                 },
                 Activity: {
-                    screen: Activity
+                    screen: ActivityNavigator
                 },
                 Profile: {
-                    screen: Profile
+                    screen: ProfileNavigator
                 }
             }
         )

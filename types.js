@@ -7,6 +7,4 @@ export const UPDATE_USERNAME = 'UPDATE_USERNAME';
 export const UPDATE_BIO = 'UPDATE_BIO';
 export const SIGN_OUT = 'SIGN_OUT';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
-// export const = '';
-// export const = '';
-//
+export const UPDATE_UPLOAD_IMAGE = 'UPDATE_UPLOAD_IMAGE';

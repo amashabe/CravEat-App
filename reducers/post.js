@@ -1,4 +1,4 @@
-import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE} from '../types';
+import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_UPLOAD_IMAGE} from '../types';
 
 export default function(state=null, action) {
     switch (action.type) {
@@ -8,6 +8,8 @@ export default function(state=null, action) {
             return {...state, feed: action.payload}
         case UPDATE_RECIPE:
             return {...state, recipe: action.payload}
+        case UPDATE_UPLOAD_IMAGE:
+            return {...state, photo: action.payload}
         default:
             return state
     }

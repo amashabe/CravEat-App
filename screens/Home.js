@@ -15,7 +15,6 @@ class Home extends React.Component {
     if(this.props.post === null) return null
     return (
       <View style={styles.container}>
-          <StatusBar hidden={true}/>
         <FlatList
           data={this.props.post.feed}
           keyExtractor={(item) => item.id}

@@ -1,32 +1,22 @@
 import * as React from 'react';
-import { Button, Image, View } from 'react-native';
+import { Button, Image, View, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { connect } from 'react-redux';
+import {updatePostPhoto} from '../actions/post';
+
+const width = Dimensions.get('window').width;
 
 class UploadImage extends React.Component {
-    state = {
-        image: null,
-    };
-
     render() {
-        let { image } = this.state;
-
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Button
-                    title="Pick an image from camera roll"
-                    onPress={this._pickImage}
-                />
-                {image &&
-                <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            </View>
+                <Button title="Pick an image from camera roll" onPress={this._pickImage} />
         );
     }
 
     componentDidMount() {
         this.getPermissionAsync();
-        console.log('hi');
     }
 
     getPermissionAsync = async () => {
@@ -45,13 +35,14 @@ class UploadImage extends React.Component {
             aspect: [4, 3],
             quality: 1
         });
-
-        console.log(result);
-
         if (!result.cancelled) {
-            this.setState({ image: result.uri });
+           this.props.updatePostPhoto(result.uri)
         }
     };
 }
 
-export default UploadImage;
+const mapStateToProps = state => ({
+    post: state.post
+})
+
+export default connect(mapStateToProps, { updatePostPhoto })(UploadImage)
