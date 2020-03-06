@@ -42,6 +42,18 @@ export const signOut = () => dispatch => {
 	dispatch( {type: SIGN_OUT})
 }
 
+export const updateUser = () => async (dispatch, getState) => {
+	const {uid, username, photo, bio} = getState().user;
+	try{
+		db.collection('users/').doc(uid).update({
+			username: username,
+			bio: bio,
+			photo: photo
+		})
+	}catch (e) {
+		alert(e)
+	}
+}
 
 export const signup = () => async (dispatch, getState) => {
 	try {

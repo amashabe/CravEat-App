@@ -18,6 +18,7 @@ class Profile extends React.Component {
         <Text>{this.props.user.username}</Text>
         <Text>{this.props.user.bio}</Text>
         <Button title='Logout' onPress={() => this.props.signOut()}/>
+        <Button title='Edit Details' onPress={() => this.props.navigation.navigate('UpdateDetails')}/>
       </View>
     );
   }

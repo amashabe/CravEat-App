@@ -4,6 +4,7 @@ import Search from '../screens/Search'
 import Post from '../screens/Post'
 import Activity from '../screens/Activity'
 import Profile from '../screens/Profile'
+import UpdateDetails from '../screens/UpdateDetails';
 import { createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
@@ -68,7 +69,22 @@ export const ProfileNavigator = createAppContainer(createStackNavigator(
       navigationOptions: {
         title: 'Profile'
       }
-    }
+    },
+      UpdateDetails: {
+        screen:UpdateDetails,
+          navigationOptions: {
+            title: 'Edit user details'
+          }
+      }
   }
 ));
 
+ProfileNavigator.navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true
+    if (navigation.state.routes.some(route => route.routeName === 'UpdateDetails')) {
+        tabBarVisible = false
+    }
+    return {
+        tabBarVisible,
+    }
+}
