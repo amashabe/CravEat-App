@@ -8,7 +8,6 @@ class SignUp extends React.Component {
 
   signup = () => {
     this.props.signup()
-    this.props.navigation.navigate('Home')
   }
 
   render() {

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { updateEmail, updatePassword, login} from '../actions/user'
 import firebase from 'firebase'
 import styles from '../styles'
+import SignUp from "./SignUp";
 
 class SignIn extends React.Component {
   render() {
@@ -26,8 +27,8 @@ class SignIn extends React.Component {
       		<Text>Login</Text>
       	</TouchableOpacity>
       	<Text>OR</Text>
-      	<TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
-      		<Text>Signup</Text>
+      	<TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
+      		<Text>SignUp</Text>
       	</TouchableOpacity>
       </View>
     );

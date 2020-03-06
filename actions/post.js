@@ -19,6 +19,7 @@ export const updateLocation = (text) => {
 }
 
 export const getDownloadUrl = () => async (dispatch, getState) => {
+	let picurl;
 	try {
 		const { post } = getState();
 		const respond = await fetch(post.photo);
@@ -32,7 +33,8 @@ export const getDownloadUrl = () => async (dispatch, getState) => {
 				console.log(error)
 			}, () => {
 				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-					dispatch({type: DOWNLOAD_URL, payload: downloadURL})
+
+					picurl = downloadURL;
 					}
 				);
 			});
@@ -44,7 +46,7 @@ export const getDownloadUrl = () => async (dispatch, getState) => {
 
 export const uploadPost = () => async (dispatch, getState) => {
 		try {
-			dispatch(getDownloadUrl())
+
 			const { post, user } = getState();
 			const upload = {
 				postPhoto: post.downloadURL,
@@ -54,7 +56,8 @@ export const uploadPost = () => async (dispatch, getState) => {
 				username: user.username,
 				postRecipe: post.recipe,
 				postLocation: post.location,
-				createdAt: new Date().toISOString()
+				createdAt: new Date().toISOString(),
+				likes: []
 			}
 			const ref = await db.collection('posts').doc()
 			upload.id = ref.id
