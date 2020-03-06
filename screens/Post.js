@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import * as Location from 'expo-location';
 import { updateDescription, uploadPost, updateRecipe, updateLocation } from '../actions/post'
 import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
-import UploadImage from "../components/UploadImage";
 import * as Permissions from 'expo-permissions';
 import styles from '../styles';
+import ImagePicker from "./ImagePicker";
 const GOOGLE_API = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 const googleApiKey = 'AIzaSyAgjhZeIV4iIBe4cDyudFsyVGgVFK3P38U';
 
@@ -64,6 +64,7 @@ class Post extends React.Component {
               </SafeAreaView>
           </Modal>
           <Image style={styles.postPhoto} source={{uri: this.props.post.photo }}/>
+          <ImagePicker />
         <TextInput
         	style={styles.border}
         	value={this.props.post.description}
@@ -76,7 +77,6 @@ class Post extends React.Component {
               onChangeText={text => this.props.updateRecipe(text)}
               placeholder='Recipe'
           />
-          <UploadImage />
           <TouchableOpacity style={styles.border} onPress={this.getLocations}>
               <Text style={styles.gray}>{this.props.post.location ? this.props.post.location.name : 'Add a Location'}</Text>
           </TouchableOpacity>

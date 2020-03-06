@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
-import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_UPLOAD_IMAGE,UPDATE_LOCATION, DOWNLOAD_URL} from '../types';
+import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO,UPDATE_LOCATION} from '../types';
 
 export const updateDescription = (text) => {
 	return {type: UPDATE_DESCRIPTION, payload: text}
@@ -10,38 +10,12 @@ export const updateRecipe = (text) => {
 	return {type: UPDATE_RECIPE, payload: text}
 }
 
-export const updatePostPhoto = (text) => {
-	return {type: UPDATE_UPLOAD_IMAGE, payload: text}
+export const updatePhoto = (text) => {
+	return {type: UPDATE_PHOTO, payload: text}
 }
 
 export const updateLocation = (text) => {
 	return {type: UPDATE_LOCATION, payload: text}
-}
-
-export const getDownloadUrl = () => async (dispatch, getState) => {
-	let picurl;
-	try {
-		const { post } = getState();
-		const respond = await fetch(post.photo);
-		const file = await respond.blob();
-		const newPostKey = firebase.database().ref().child('posts').push().key;
-		const metadata = { contentType: 'image/jpeg' };
-		let uploadTask = firebase.storage().ref().child('images/' + newPostKey).put(file, metadata);
-		uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-			(snapshot) => {
-			}, (error) => {
-				console.log(error)
-			}, () => {
-				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-
-					picurl = downloadURL;
-					}
-				);
-			});
-
-	} catch (e) {
-		alert(e)
-	}
 }
 
 export const uploadPost = () => async (dispatch, getState) => {
@@ -49,7 +23,7 @@ export const uploadPost = () => async (dispatch, getState) => {
 
 			const { post, user } = getState();
 			const upload = {
-				postPhoto: post.downloadURL,
+				postPhoto: post.photo,
 				postDescription: post.description,
 				uid: user.uid,
 				photo: user.photo,
@@ -80,4 +54,28 @@ export const getPosts = () => async (dispatch, getState) => {
 		} catch (e) {
 			alert(e)
 		}
+}
+
+export const likePost = (post) => (dispatch, getState) => {
+	const { uid } = getState().user
+	try {
+		db.collection('posts').doc(post.id).update({
+			likes: firebase.firestore.FieldValue.arrayUnion(uid)
+		})
+		dispatch(getPosts())
+	} catch(e) {
+		console.error(e)
+	}
+}
+
+export const unlikePost = (post) => async (dispatch, getState) => {
+	const { uid } = getState().user
+	try {
+		db.collection('posts').doc(post.id).update({
+			likes: firebase.firestore.FieldValue.arrayRemove(uid)
+		})
+		dispatch(getPosts())
+	} catch(e) {
+		console.error(e)
+	}
 }

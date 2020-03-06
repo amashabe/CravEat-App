@@ -1,8 +1,8 @@
 {
+  "urlRandomness": "kv-s7g",
   "hostType": "lan",
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": "fw-gtc",
   "https": false
 }
