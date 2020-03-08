@@ -43,5 +43,15 @@ export default styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     margin: 5
+  },
+  input: {
+    width: width*.90,
+    margin: 15,
+    padding: 15,
+    alignSelf: 'center',
+    borderColor: '#d3d3d3',
+    borderWidth: 1,
+    borderRadius: 50,
+    fontSize: 16,
   }
 });

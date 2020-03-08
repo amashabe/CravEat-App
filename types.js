@@ -9,3 +9,4 @@ export const SIGN_OUT = 'SIGN_OUT';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const UPDATE_PHOTO = 'UPDATE_PHOTO';
 export const UPDATE_LOCATION = 'UPDATE_LOCATION';
+export const GET_COMMENTS = 'GET_COMMENTS';

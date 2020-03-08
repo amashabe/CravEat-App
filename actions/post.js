@@ -1,60 +1,61 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
-import {UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO,UPDATE_LOCATION} from '../types';
-import user from "../reducers/user";
+import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS } from '../types';
+import cloneDeep from 'lodash/cloneDeep'
+import orderBy from 'lodash/orderBy';
 
 export const updateDescription = (text) => {
-	return {type: UPDATE_DESCRIPTION, payload: text}
+	return { type: UPDATE_DESCRIPTION, payload: text }
 }
 
 export const updateRecipe = (text) => {
-	return {type: UPDATE_RECIPE, payload: text}
+	return { type: UPDATE_RECIPE, payload: text }
 }
 
 export const updatePhoto = (text) => {
-	return {type: UPDATE_PHOTO, payload: text}
+	return { type: UPDATE_PHOTO, payload: text }
 }
 
 export const updateLocation = (text) => {
-	return {type: UPDATE_LOCATION, payload: text}
+	return { type: UPDATE_LOCATION, payload: text }
 }
 
 export const uploadPost = () => async (dispatch, getState) => {
-		try {
+	try {
 
-			const { post, user } = getState();
-			const upload = {
-				postPhoto: post.photo,
-				postDescription: post.description,
-				uid: user.uid,
-				photo: user.photo,
-				username: user.username,
-				postRecipe: post.recipe,
-				postLocation: post.location,
-				createdAt: new Date().getTime(),
-				likes: []
-			}
-			const ref = await db.collection('posts').doc()
-			upload.id = ref.id
-			ref.set(upload)
-
-		} catch (e) {
-			alert(e)
+		const { post, user } = getState();
+		const upload = {
+			postPhoto: post.photo,
+			postDescription: post.description,
+			uid: user.uid,
+			photo: user.photo,
+			username: user.username,
+			postRecipe: post.recipe,
+			postLocation: post.location,
+			createdAt: new Date().getTime(),
+			likes: []
 		}
+		const ref = await db.collection('posts').doc()
+		upload.id = ref.id
+		ref.set(upload)
+
+	} catch (e) {
+		alert(e)
+	}
 }
 
 export const getPosts = () => async (dispatch, getState) => {
-		try {
-			const posts = await db.collection('posts').get()
-			
-			let array = []
-			posts.forEach((post)=>{
-				array.push(post.data())
-			})
-			dispatch({type: GET_POSTS, payload: array})
-		} catch (e) {
-			alert(e)
-		}
+	try {
+		const posts = await db.collection('posts').get()
+
+		let array = []
+		posts.forEach((post) => {
+			array.push(post.data())
+		})
+		dispatch({ type: GET_POSTS, payload: array })
+	} catch (e) {
+		alert(e)
+	}
 }
 
 export const likePost = (post) => (dispatch, getState) => {
@@ -74,7 +75,7 @@ export const likePost = (post) => (dispatch, getState) => {
 			type: 'LIKE'
 		})
 		dispatch(getPosts())
-	} catch(e) {
+	} catch (e) {
 		console.error(e)
 	}
 }
@@ -90,7 +91,43 @@ export const unlikePost = (post) => async (dispatch, getState) => {
 			response.ref.delete()
 		})
 		dispatch(getPosts())
-	} catch(e) {
+	} catch (e) {
 		console.error(e)
 	}
 }
+
+export const getComments = (post) => {
+	return dispatch => {
+	  dispatch({ type: GET_COMMENTS, payload: orderBy(post.comments, 'createdAt','desc') })
+	}
+  }
+  
+  export const addComment = (text, post) => {
+	return (dispatch, getState) => {
+	  const { uid, photo, username } = getState().user
+	  let comments = cloneDeep(getState().post.comments.reverse())
+	  try {
+		const comment = {
+		  comment: text,
+		  commenterId: uid,
+		  commenterPhoto: photo || '',
+		  commenterName: username,
+		  date: new Date().getTime(),
+		}
+		console.log(comment)
+		db.collection('posts').doc(post.id).update({
+		  comments: firebase.firestore.FieldValue.arrayUnion(comment)
+		})
+		comment.postId = post.id
+		comment.postPhoto = post.postPhoto
+		comment.uid = post.uid
+		comment.type = 'COMMENT'
+		comments.push(comment)
+		dispatch({ type: GET_COMMENTS, payload: comments.reverse() })
+  
+		db.collection('notifications').doc().set(comment)
+	  } catch(e) {
+		console.error(e)
+	  }
+	}
+  }
