@@ -67,6 +67,8 @@ export const signup = () => async (dispatch, getState) => {
 				bio: bio,
 				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/no-img.png?alt=media&token=1db1f8f7-9eba-4a8f-8df7-37ea638e9dc0',
 				token: null,
+                followed: [],
+                following: []
 			}
 			db.collection('users').doc(response.user.uid).set(user)
 			dispatch({type: SIGN_IN, payload: user})
