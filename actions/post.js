@@ -22,7 +22,6 @@ export const updateLocation = (text) => {
 
 export const uploadPost = () => async (dispatch, getState) => {
 	const { post, user } = getState();
-	console.log(post.feed)
 	let newPosts = cloneDeep(post.feed.reverse())
 	try {
 		const upload = {
@@ -78,7 +77,7 @@ export const likePost = (post) => (dispatch, getState) => {
 		})
 		dispatch(getPosts())
 	} catch (e) {
-		console.error(e)
+		alert(e)
 	}
 }
 

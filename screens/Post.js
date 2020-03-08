@@ -31,14 +31,11 @@ class Post extends React.Component {
         this.setState({ showModal: true })
         const permission = await Permissions.askAsync(Permissions.LOCATION)
         if (permission.status === 'granted') {
-            console.log(permission)
             const location = await Location.getCurrentPositionAsync()
-            console.log(location)
             const url = `${GOOGLE_API}?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&key=${googleApiKey}`
             const response = await fetch(url)
             const data = await response.json()
             this.setState({ locations: data.results })
-            console.log( data )
         }
     }
 
