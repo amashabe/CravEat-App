@@ -21,9 +21,10 @@ export const updateLocation = (text) => {
 }
 
 export const uploadPost = () => async (dispatch, getState) => {
+	const { post, user } = getState();
+	console.log(post.feed)
+	let newPosts = cloneDeep(post.feed.reverse())
 	try {
-
-		const { post, user } = getState();
 		const upload = {
 			postPhoto: post.photo,
 			postDescription: post.description,
@@ -38,7 +39,8 @@ export const uploadPost = () => async (dispatch, getState) => {
 		const ref = await db.collection('posts').doc()
 		upload.id = ref.id
 		ref.set(upload)
-
+		newPosts.push(upload)
+		dispatch({type: GET_POSTS, payload: newPosts.reverse()})
 	} catch (e) {
 		alert(e)
 	}
@@ -52,7 +54,7 @@ export const getPosts = () => async (dispatch, getState) => {
 		posts.forEach((post) => {
 			array.push(post.data())
 		})
-		dispatch({ type: GET_POSTS, payload: array })
+		dispatch({ type: GET_POSTS, payload: orderBy(array, 'createdAt', 'desc') })
 	} catch (e) {
 		alert(e)
 	}
@@ -110,11 +112,10 @@ export const getComments = (post) => {
 		const comment = {
 		  comment: text,
 		  commenterId: uid,
-		  commenterPhoto: photo || '',
+		  commenterPhoto: photo,
 		  commenterName: username,
 		  date: new Date().getTime(),
 		}
-		console.log(comment)
 		db.collection('posts').doc(post.id).update({
 		  comments: firebase.firestore.FieldValue.arrayUnion(comment)
 		})
@@ -124,7 +125,6 @@ export const getComments = (post) => {
 		comment.type = 'COMMENT'
 		comments.push(comment)
 		dispatch({ type: GET_COMMENTS, payload: comments.reverse() })
-  
 		db.collection('notifications').doc().set(comment)
 	  } catch(e) {
 		console.error(e)
