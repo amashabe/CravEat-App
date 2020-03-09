@@ -33,7 +33,9 @@ export const uploadPost = () => async (dispatch, getState) => {
 			postRecipe: post.recipe,
 			postLocation: post.location,
 			createdAt: new Date().getTime(),
-			likes: []
+			likes: [],
+			noOfLikes: 0,
+			noOfComments: 0
 		}
 		const ref = await db.collection('posts').doc()
 		upload.id = ref.id
@@ -61,10 +63,13 @@ export const getPosts = () => async (dispatch, getState) => {
 
 export const likePost = (post) => (dispatch, getState) => {
 	const { uid, username, photo } = getState().user
+	const ref = db.collection('posts').doc(post.id);
+	const increment = firebase.firestore.FieldValue.increment(1);
 	try {
 		db.collection('posts').doc(post.id).update({
 			likes: firebase.firestore.FieldValue.arrayUnion(uid)
 		})
+		ref.update({'noOfLikes': increment })
 		db.collection('notifications').doc().set({
 			postId: post.id,
 			postPhoto: post.postPhoto,
@@ -82,7 +87,9 @@ export const likePost = (post) => (dispatch, getState) => {
 }
 
 export const unlikePost = (post) => async (dispatch, getState) => {
-	const { uid } = getState().user
+	const { uid } = getState().user;
+	const ref = db.collection('posts').doc(post.id);
+	const decrement = firebase.firestore.FieldValue.increment(-1)
 	try {
 		db.collection('posts').doc(post.id).update({
 			likes: firebase.firestore.FieldValue.arrayRemove(uid)
@@ -91,6 +98,7 @@ export const unlikePost = (post) => async (dispatch, getState) => {
 		query.forEach((response) => {
 			response.ref.delete()
 		})
+		await ref.update({'noOfLikes': decrement })
 		dispatch(getPosts())
 	} catch (e) {
 		console.error(e)
@@ -106,6 +114,8 @@ export const getComments = (post) => {
   export const addComment = (text, post) => {
 	return (dispatch, getState) => {
 	  const { uid, photo, username } = getState().user
+		const ref = db.collection('posts').doc(post.id);
+	  const increment = firebase.firestore.FieldValue.increment(1);
 	  let comments = cloneDeep(getState().post.comments.reverse())
 	  try {
 		const comment = {
@@ -113,18 +123,20 @@ export const getComments = (post) => {
 		  commenterId: uid,
 		  commenterPhoto: photo,
 		  commenterName: username,
-		  date: new Date().getTime(),
+		  createdAt: new Date().getTime(),
 		}
 		db.collection('posts').doc(post.id).update({
-		  comments: firebase.firestore.FieldValue.arrayUnion(comment)
+		  comments: firebase.firestore.FieldValue.arrayUnion(comment),
+			noOfComments: increment
 		})
 		comment.postId = post.id
 		comment.postPhoto = post.postPhoto
 		comment.uid = post.uid
 		comment.type = 'COMMENT'
 		comments.push(comment)
-		dispatch({ type: GET_COMMENTS, payload: comments.reverse() })
-		db.collection('notifications').doc().set(comment)
+		  db.collection('notifications').doc().set(comment)
+		  dispatch({ type: GET_COMMENTS, payload: comments.reverse() })
+		  dispatch(getPosts())
 	  } catch(e) {
 		console.error(e)
 	  }

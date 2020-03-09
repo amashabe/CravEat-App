@@ -44,52 +44,52 @@ class Post extends React.Component {
         this.props.navigation.navigate('Home')
     }
 
-  render() {
-    return (
-      <View style={styles.container}>
-          <Modal animationType='slide' transparent={false} visible={this.state.showModal}>
-              <SafeAreaView style={[styles.container, styles.center]}>
-                  <FlatList
-                      keyExtractor={(item) => item.id}
-                      data={this.state.locations}
-                      renderItem={({ item }) => (
-                          <TouchableOpacity style={styles.border} onPress={() => this.setLocation(item)}>
-                              <Text style={styles.gray}>{item.name}</Text>
-                              <Text style={styles.gray}>{item.vicinity}</Text>
-                          </TouchableOpacity>
-                      )}/>
-              </SafeAreaView>
-          </Modal>
-          <Image style={styles.postPhoto} source={{uri: this.props.post.photo }}/>
-          <ImagePicker />
-        <TextInput
-        	style={styles.border}
-        	value={this.props.post.description}
-        	onChangeText={text => this.props.updateDescription(text)}
-        	placeholder='Description'
-        />
-          <TextInput
-              style={styles.border}
-              value={this.props.post.recipe}
-              onChangeText={text => this.props.updateRecipe(text)}
-              placeholder='Recipe'
-          />
-          <TouchableOpacity style={styles.border} onPress={this.getLocations}>
-              <Text style={styles.gray}>{this.props.post.location ? this.props.post.location.name : 'Add a Location'}</Text>
-          </TouchableOpacity>
-      	<TouchableOpacity style={styles.button} onPress={() => this._onUploadPost()}>
-      		<Text>Post</Text>
-      	</TouchableOpacity>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <Modal animationType='slide' transparent={false} visible={this.state.showModal}>
+                    <SafeAreaView style={[styles.container, styles.center]}>
+                        <FlatList
+                            keyExtractor={(item) => item.id}
+                            data={this.state.locations}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity style={styles.border} onPress={() => this.setLocation(item)}>
+                                    <Text style={styles.gray}>{item.name}</Text>
+                                    <Text style={styles.gray}>{item.vicinity}</Text>
+                                </TouchableOpacity>
+                            )}/>
+                    </SafeAreaView>
+                </Modal>
+                <Image style={styles.postPhoto} source={{uri: this.props.post.photo }}/>
+                <ImagePicker />
+                <TextInput
+                    style={styles.border}
+                    value={this.props.post.description}
+                    onChangeText={text => this.props.updateDescription(text)}
+                    placeholder='Description'
+                />
+                <TextInput
+                    style={styles.border}
+                    value={this.props.post.recipe}
+                    onChangeText={text => this.props.updateRecipe(text)}
+                    placeholder='Recipe'
+                />
+                <TouchableOpacity style={styles.border} onPress={this.getLocations}>
+                    <Text style={styles.gray}>{this.props.post.location ? this.props.post.location.name : 'Add a Location'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => this._onUploadPost()}>
+                    <Text>Post</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    post: state.post,
-    user: state.user
-  }
+    return {
+        post: state.post,
+        user: state.user
+    }
 }
 
 export default connect(mapStateToProps, { updateDescription, uploadPost, updateRecipe, updateLocation })(Post)

@@ -53,5 +53,9 @@ export default styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50,
     fontSize: 16,
+  },
+  space: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
   }
 });

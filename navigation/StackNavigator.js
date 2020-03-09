@@ -6,6 +6,7 @@ import Activity from '../screens/Activity'
 import Profile from '../screens/Profile'
 import Comment from '../screens/Comment';
 import UpdateDetails from '../screens/UpdateDetails';
+import Listing from "../screens/Listing";
 import { createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
@@ -22,7 +23,13 @@ export const HomeNavigator = createAppContainer(createStackNavigator(
       navigationOptions: {
         title: 'Comment'
       }
-    }
+    },
+      Post: {
+        screen: Post,
+          navigationOptions: {
+            title: ' '
+          }
+      }
   }
 ));
 
@@ -33,7 +40,10 @@ HomeNavigator.navigationOptions = ({ navigation }) => {
     }
     if (navigation.state.routes.some(route => route.routeName === 'Comment')) {
       tabBarVisible = false
-  }
+    }
+    if (navigation.state.routes.some(route => route.routeName === 'Post')) {
+        tabBarVisible = false
+    }
     return {
         tabBarVisible,
     }
@@ -50,12 +60,12 @@ export const SearchNavigator = createAppContainer(createStackNavigator(
   }
 ));
 
-export const PostNavigator = createAppContainer(createStackNavigator(
+export const ListingNavigator = createAppContainer(createStackNavigator(
   {
-    Post: { 
-      screen: Post,
+      Listing: {
+      screen: Listing,
       navigationOptions: {
-        title: 'Post'
+        title: 'Listing'
       }
     }
   }
