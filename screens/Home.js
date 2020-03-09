@@ -50,7 +50,7 @@ class Home extends React.Component {
                     <Image style={styles.postPhoto} source={{ uri: `${item.postPhoto}` }} />
                   </TouchableOpacity>
                     <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.8)']} style={{ position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 10, paddingVertical: 15 }}>
-                        <Text style={{ color: "#FFF", fontWeight: "400", fontSize: 20 }}>{item.postRecipe}</Text>
+                        <Text style={{ color: "#FFF", fontWeight: "400", fontSize: 20 }}>{item.postDescription}</Text>
                         <View style={{ position: "absolute", right: 10, top: 26 }}>
                             <Text style={{ fontSize: 12, fontWeight: "400", color: "#fff" }}>{ moment(item.createdAt).fromNow()}</Text>
                         </View>

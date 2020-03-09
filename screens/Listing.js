@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {View, Text} from 'react-native';
 
 class Listing extends Component {
     render() {

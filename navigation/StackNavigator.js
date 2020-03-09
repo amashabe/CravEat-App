@@ -65,7 +65,7 @@ export const ListingNavigator = createAppContainer(createStackNavigator(
       Listing: {
       screen: Listing,
       navigationOptions: {
-        title: 'Listing'
+       headerShown: false
       }
     }
   }

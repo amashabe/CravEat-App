@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
-import {UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT} from '../types';
+import {UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING} from '../types';
 
 export const updateEmail = (email) => {
 	return {type: UPDATE_EMAIL, payload: email}
@@ -40,6 +40,10 @@ export const getUser = (uid) => async (dispatch, getState) => {
 export const signOut = () => dispatch => {
 	firebase.auth().signOut();
 	dispatch( {type: SIGN_OUT})
+	dispatch({type: UPDATE_BIO,payload: ''})
+	dispatch({type: UPDATE_USERNAME,payload: ''})
+	dispatch({type: UPDATE_EMAIL,payload: ''})
+	dispatch({type: UPDATE_PASSWORD,payload: ''})
 }
 
 export const updateUser = () => async (dispatch, getState) => {

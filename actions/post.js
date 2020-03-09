@@ -42,6 +42,10 @@ export const uploadPost = () => async (dispatch, getState) => {
 		ref.set(upload)
 		newPosts.push(upload)
 		dispatch({type: GET_POSTS, payload: newPosts.reverse()})
+		dispatch({type: UPDATE_PHOTO, payload: ''})
+		dispatch({type: UPDATE_LOCATION, payload: ''})
+		dispatch({type: UPDATE_DESCRIPTION, payload: ''})
+		dispatch({type: UPDATE_RECIPE, payload: ''})
 	} catch (e) {
 		alert(e)
 	}

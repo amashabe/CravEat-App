@@ -46,7 +46,7 @@ class Activity extends React.Component {
                         <Image style={{width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: '#adadad'}} source={{uri: item.commenterPhoto}}/>
                         <View style={{flex: 1, backgroundColor: '#fff', alignItems: 'flex-start'}}>
                             <Text style={{ fontWeight: 'bold',}}>{item.commenterName}</Text>
-                            <Text style={{ color: '#adadad'}}>{item.comment}</Text>
+                            <Text style={{ color: '#adadad'}}>Commented On Your Photo</Text>
                             <Text style={{ color: '#adadad', fontSize: 10}}>{moment(item.createdAt).fromNow()}</Text>
                         </View>
                         <Image style={{width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: '#adadad'}} source={{uri: item.postPhoto}}/>

@@ -1,4 +1,4 @@
-import {SIGN_IN, UPDATE_BIO, UPDATE_EMAIL, UPDATE_USERNAME, UPDATE_PASSWORD, SIGN_OUT} from '../types';
+import {SIGN_IN, UPDATE_BIO, UPDATE_EMAIL, UPDATE_USERNAME, UPDATE_PASSWORD, SIGN_OUT, LOADING} from '../types';
 
 export default function(state = {}, action)  {
     switch (action.type) {
@@ -14,6 +14,8 @@ export default function(state = {}, action)  {
             return {...state, username: action.payload}
         case UPDATE_BIO:
             return {...state, bio: action.payload}
+        case LOADING:
+            return {...state, loading: action.payload}
         default:
             return state
     }

@@ -57,5 +57,11 @@ export default styles = StyleSheet.create({
   space: {
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  LoginTouchOpacity: {
+    marginTop: 2,
+    borderRadius: 3,
+    backgroundColor: '#ff741a',
+
   }
 });
