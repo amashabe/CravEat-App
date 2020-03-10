@@ -12,9 +12,9 @@ class Activity extends React.Component {
         notification: []
     }
 
-    // componentDidUpdate() {
-    //     this.getNotifications()
-    // }
+    componentDidUpdate() {
+        this.getNotifications()
+    }
 
     componentDidMount = () => {
         this.getNotifications()

@@ -1,5 +1,13 @@
 import { SIGN_IN, UPDATE_BIO, UPDATE_EMAIL, UPDATE_USERNAME, UPDATE_PASSWORD, SIGN_OUT, LOADING } from '../types';
 
+const initialState ={
+    email: null,
+    password: null,
+    bio: null,
+    loading: false,
+    username: null
+}
+
 export default function (state = {}, action) {
     switch (action.type) {
         case SIGN_IN:

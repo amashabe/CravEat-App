@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Image, Dimensions } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Image, Dimensions, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux'
 import { updateEmail, updatePassword, login } from '../actions/user'
 import styles from '../styles';
@@ -24,6 +24,7 @@ class SignIn extends React.Component {
 					placeholderTextColor="#202020"
 				/>
 				<TextInput
+					secureTextEntry
 					autoCorrect={false}
 					autoCapitalize="none"
 					style={{ borderColor: 'grey', borderRadius: 4, borderWidth: 1, height: 45, padding: 5, marginBottom: 3, backgroundColor: '#FFF', width: '95%' }}
@@ -32,22 +33,32 @@ class SignIn extends React.Component {
 					placeholderTextColor="#202020"
 					onChangeText={input => this.props.updatePassword(input)}
 				/>
-				<TouchableOpacity style={{ ...styles.LoginTouchOpacity, width: width * .95, margin: 7, padding: 8, alignSelf: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 4, fontSize: 16, height: 40 }}
+				{
+					this.props.UI.errors ? <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'red', padding: 8 }}>{this.props.UI.errors}</Text> : null
+				}
+				<TouchableOpacity disabled={this.props.UI.loading} style={{ marginTop: 2, borderRadius: 3, backgroundColor: this.props.UI.loading ? '#FF9F67' : '#ff741a', width: width * .95, margin: 7, padding: 8, alignSelf: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 4, fontSize: 16, height: 40 }}
 					onPress={() => this.props.login()}>
-					<Text style={{ color: "#fff", textAlign: 'center' }}>Login</Text>
+					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+						{
+							this.props.UI.loading ?
+								<ActivityIndicator size="small" color="#ffffff" animating /> :
+								<Text style={{ color: "#fff", textAlign: 'center' }}>SignIn.</Text>
+						}
+					</View>
 				</TouchableOpacity>
 				<Hr textColor='#000000' width={12} text="OR" fontSize={12} lineColor="#000000" textPadding={5} hrStyles={{ padding: 8 }} />
 				<TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
 					<Text>SignUp</Text>
 				</TouchableOpacity>
-			</KeyboardAvoidingView>
+			</KeyboardAvoidingView >
 		);
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.user,
+		UI: state.UI
 	}
 }
 

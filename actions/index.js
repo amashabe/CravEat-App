@@ -10,7 +10,6 @@ export const uploadImage = (url) => async (dispatch) => {
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         (snapshot) => {
         }, (error) => {
-            console.log(error)
         }, () => {
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                 dispatch({ type: UPDATE_PHOTO, payload: downloadURL })

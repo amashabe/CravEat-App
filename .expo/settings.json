@@ -1,8 +1,8 @@
 {
-  "dev": true,
-  "minify": false,
+  "urlRandomness": "5e-j5k",
   "hostType": "lan",
   "lanType": "ip",
-  "urlRandomness": null,
+  "dev": true,
+  "minify": false,
   "https": false
 }

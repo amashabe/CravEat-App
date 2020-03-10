@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, Image } from 'react-native';
+import { View, ActivityIndicator, Image, Dimensions } from 'react-native';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { getUser } from '../actions/user';
 import styles from "../styles";
+
+const height = Dimensions.get('window').height;
+const width = Dimensions.get('window').width;
 
 class Loading extends Component {
     componentDidMount = () => {
@@ -21,8 +24,8 @@ class Loading extends Component {
     }
     render() {
         return (
-            <View style={styles.container}>
-                <ActivityIndicator color="orange" size={69} />
+            <View >
+                <Image source={require('../assets/splash.png')} style={{ height: height * 1, width: width * 1 }} />
             </View>
         );
     }

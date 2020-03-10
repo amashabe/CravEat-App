@@ -11,3 +11,5 @@ export const UPDATE_PHOTO = 'UPDATE_PHOTO';
 export const UPDATE_LOCATION = 'UPDATE_LOCATION';
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const GET_POST = 'GET_POST';
+export const LOADING = 'LOADING';
+export const SET_ERROR = 'SET_ERROR';
