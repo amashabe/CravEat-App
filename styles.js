@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-const  { width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default styles = StyleSheet.create({
   container: {
@@ -39,13 +39,13 @@ export default styles = StyleSheet.create({
     width: width,
   },
   roundImage: {
-    width: 40, 
+    width: 40,
     height: 40,
     borderRadius: 20,
     margin: 5
   },
   input: {
-    width: width*.90,
+    width: width * .90,
     margin: 15,
     padding: 15,
     alignSelf: 'center',

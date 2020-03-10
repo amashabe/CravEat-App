@@ -20,16 +20,17 @@ class Comment extends React.Component {
     this.setState({ comment: '' })
   }
 
+
   render() {
     return (
-      <KeyboardAvoidingView enabled behavior='padding' style={{flex: 1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView enabled behavior='padding' style={{ flex: 1, backgroundColor: '#fff' }}>
         <FlatList
-          keyExtractor={(item) => JSON.stringify(item.date)}
+          keyExtractor={(item) => JSON.stringify(item.createdAt)}
           data={this.props.post.comments}
           renderItem={({ item }) => (
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap' }}>
               <Image style={{ width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: '#adadad' }} source={{ uri: item.commenterPhoto }} />
-              <View style={{flex: 1, backgroundColor: '#fff', alignItems: 'flex-start'}}>
+              <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'flex-start' }}>
                 <Text>{item.commenterName}</Text>
                 <Text>{item.comment}</Text>
               </View>

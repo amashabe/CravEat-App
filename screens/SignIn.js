@@ -1,54 +1,54 @@
 import React from 'react';
-import {Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Image, Dimensions} from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Image, Dimensions } from 'react-native';
 import { connect } from 'react-redux'
-import { updateEmail, updatePassword, login} from '../actions/user'
+import { updateEmail, updatePassword, login } from '../actions/user'
 import styles from '../styles';
 import Hr from "react-native-hr-component";
-const  { width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 class SignIn extends React.Component {
-  render() {
-    return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={-100}>
-		  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-			  <Image source={require('../assets/icon.png')} style={{justifyContent: 'center',width: 100,height: 100,alignItems: 'center',marginBottom: 20}} />
-		  </View>
-        <TextInput
-			autoCorrect={false}
-			autoCompleteType="off"
-			autoCapitalize="none"
-        	style={{borderColor: 'grey', borderRadius: 4, borderWidth: 1, height: 45, padding: 5, marginBottom: 3, backgroundColor: '#FFF', width: '95%'}}
-        	value={this.props.user.email}
-        	onChangeText={input => this.props.updateEmail(input)}
-        	placeholder='Email'
-			placeholderTextColor="#202020"
-        />
-        <TextInput
-			autoCorrect={false}
-			autoCapitalize="none"
-			style={{borderColor: 'grey', borderRadius: 4, borderWidth: 1, height: 45, padding: 5, marginBottom: 3, backgroundColor: '#FFF', width: '95%'}}
-			value={this.props.user.email}
-			placeholder='Password'
-			placeholderTextColor="#202020"
-        	onChangeText={input => this.props.updatePassword(input)}
-        />
-      	<TouchableOpacity style={{...styles.LoginTouchOpacity, width: width*.95, margin: 7, padding: 8, alignSelf: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 4, fontSize: 16, height: 40}}
-						  onPress={() => this.props.login()}>
-      		<Text style={{ color: "#fff", textAlign: 'center' }}>Login</Text>
-      	</TouchableOpacity>
-		  <Hr textColor='#000000' width={12} text="OR" fontSize={12} lineColor="#000000" textPadding={5} hrStyles={{padding: 8}} />
-      	<TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
-      		<Text>SignUp</Text>
-      	</TouchableOpacity>
-      </KeyboardAvoidingView>
-    );
-  }
+	render() {
+		return (
+			<KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={-100}>
+				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+					<Image source={require('../assets/icon.png')} style={{ justifyContent: 'center', width: 100, height: 100, alignItems: 'center', marginBottom: 20 }} />
+				</View>
+				<TextInput
+					autoCorrect={false}
+					autoCompleteType="off"
+					autoCapitalize="none"
+					style={{ borderColor: 'grey', borderRadius: 4, borderWidth: 1, height: 45, padding: 5, marginBottom: 3, backgroundColor: '#FFF', width: '95%' }}
+					value={this.props.user.email}
+					onChangeText={input => this.props.updateEmail(input)}
+					placeholder='Email'
+					placeholderTextColor="#202020"
+				/>
+				<TextInput
+					autoCorrect={false}
+					autoCapitalize="none"
+					style={{ borderColor: 'grey', borderRadius: 4, borderWidth: 1, height: 45, padding: 5, marginBottom: 3, backgroundColor: '#FFF', width: '95%' }}
+					value={this.props.user.password}
+					placeholder='Password'
+					placeholderTextColor="#202020"
+					onChangeText={input => this.props.updatePassword(input)}
+				/>
+				<TouchableOpacity style={{ ...styles.LoginTouchOpacity, width: width * .95, margin: 7, padding: 8, alignSelf: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 4, fontSize: 16, height: 40 }}
+					onPress={() => this.props.login()}>
+					<Text style={{ color: "#fff", textAlign: 'center' }}>Login</Text>
+				</TouchableOpacity>
+				<Hr textColor='#000000' width={12} text="OR" fontSize={12} lineColor="#000000" textPadding={5} hrStyles={{ padding: 8 }} />
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
+					<Text>SignUp</Text>
+				</TouchableOpacity>
+			</KeyboardAvoidingView>
+		);
+	}
 }
 
 const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  }
+	return {
+		user: state.user
+	}
 }
 
 export default connect(mapStateToProps, { updateEmail, updatePassword, login })(SignIn)

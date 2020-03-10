@@ -3,7 +3,7 @@ import { Button, Image, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { updatePhoto } from '../actions/post';
 import { uploadImage } from '../actions/index';
 
@@ -46,4 +46,4 @@ class ImagePickerExample extends React.Component {
     }
 }
 
-export default connect(null, {uploadImage, updatePhoto})(ImagePickerExample);
+export default connect(null, { uploadImage, updatePhoto })(ImagePickerExample);

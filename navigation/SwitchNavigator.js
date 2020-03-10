@@ -7,15 +7,15 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
 const SwitchNavigator = createSwitchNavigator(
   {
-    Home: { 
+    Home: {
       screen: TabNavigator
     },
-    Auth: { 
+    Auth: {
       screen: AuthNavigator
     },
-      Loading: {
-        screen: Loading
-      }
+    Loading: {
+      screen: Loading
+    }
   },
   {
     initialRouteName: 'Loading',

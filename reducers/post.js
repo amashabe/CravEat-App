@@ -1,4 +1,4 @@
-import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS } from '../types';
+import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS, GET_POST } from '../types';
 
 export default function (state = null, action) {
     switch (action.type) {
@@ -14,6 +14,8 @@ export default function (state = null, action) {
             return { ...state, location: action.payload }
         case GET_COMMENTS:
             return { ...state, comments: action.payload }
+        case GET_POST:
+            return { ...state, singlePost: action.payload }
         default:
             return state
     }

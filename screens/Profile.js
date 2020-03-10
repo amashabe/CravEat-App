@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Text, View, Button, Image} from 'react-native';
-import {signOut} from '../actions/user';
+import { Text, View, Button, Image } from 'react-native';
+import { signOut } from '../actions/user';
 import { connect } from 'react-redux'
 import styles from '../styles'
 
@@ -11,14 +11,14 @@ class Profile extends React.Component {
       <View style={styles.container}>
         <Text> Profile</Text>
         <Image
-          style={{width: 50, height: 50}}
-          source={{uri: this.props.user.photo}}
+          style={{ width: 50, height: 50 }}
+          source={{ uri: this.props.user.photo }}
         />
         <Text>{this.props.user.email}</Text>
         <Text>{this.props.user.username}</Text>
         <Text>{this.props.user.bio}</Text>
-        <Button title='Logout' onPress={() => this.props.signOut()}/>
-        <Button title='Edit Details' onPress={() => this.props.navigation.navigate('UpdateDetails')}/>
+        <Button title='Logout' onPress={() => this.props.signOut()} />
+        <Button title='Edit Details' onPress={() => this.props.navigation.navigate('UpdateDetails')} />
       </View>
     );
   }
@@ -30,4 +30,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {signOut})(Profile)
+export default connect(mapStateToProps, { signOut })(Profile)

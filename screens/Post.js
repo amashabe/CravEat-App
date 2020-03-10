@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as Location from 'expo-location';
 import { updateDescription, uploadPost, updateRecipe, updateLocation } from '../actions/post'
-import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import styles from '../styles';
 import ImagePicker from "./ImagePicker";
@@ -46,7 +46,7 @@ class Post extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={100}>
                 <Modal animationType='slide' transparent={false} visible={this.state.showModal}>
                     <SafeAreaView style={[styles.container, styles.center]}>
                         <FlatList
@@ -57,10 +57,10 @@ class Post extends React.Component {
                                     <Text style={styles.gray}>{item.name}</Text>
                                     <Text style={styles.gray}>{item.vicinity}</Text>
                                 </TouchableOpacity>
-                            )}/>
+                            )} />
                     </SafeAreaView>
                 </Modal>
-                <Image style={styles.postPhoto} source={{uri: this.props.post.photo }}/>
+                <Image style={styles.postPhoto} source={{ uri: this.props.post.photo }} />
                 <ImagePicker />
                 <TextInput
                     style={styles.border}
@@ -80,7 +80,7 @@ class Post extends React.Component {
                 <TouchableOpacity style={styles.button} onPress={() => this._onUploadPost()}>
                     <Text>Post</Text>
                 </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }

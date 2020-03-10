@@ -1,21 +1,21 @@
 import React from 'react';
 import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
-import {  createAppContainer } from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
 const StackNavigator = createStackNavigator(
   {
-      SignIn: {
+    SignIn: {
       screen: SignIn,
       navigationOptions: {
-          headerShown: false
+        headerShown: false
       }
     },
-      SignUp: {
+    SignUp: {
       screen: SignUp,
       navigationOptions: {
-          headerShown: false
+        headerShown: false
       }
     }
   }

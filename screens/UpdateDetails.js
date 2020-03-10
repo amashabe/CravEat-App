@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux'
 import { updateUser, updateEmail, updateBio, updateUsername } from '../actions/user'
@@ -34,7 +34,6 @@ class UpdateDetails extends Component {
                     onChangeText={input => this.props.updateBio(input)}
                     placeholder='Bio'
                 />
-
             </View>
         );
     }
@@ -44,4 +43,4 @@ const mapStateToProps = state => ({
     user: state.user,
 })
 
-export default connect(mapStateToProps, {updateUser, updateEmail, updateBio, updateUsername })(UpdateDetails)
+export default connect(mapStateToProps, { updateUser, updateEmail, updateBio, updateUsername })(UpdateDetails)

@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import {UPDATE_PHOTO} from '../types';
+import { UPDATE_PHOTO } from '../types';
 
 export const uploadImage = (url) => async (dispatch) => {
     const respond = await fetch(url);
@@ -13,8 +13,8 @@ export const uploadImage = (url) => async (dispatch) => {
             console.log(error)
         }, () => {
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                dispatch ({type: UPDATE_PHOTO, payload: downloadURL})
-                }
+                dispatch({ type: UPDATE_PHOTO, payload: downloadURL })
+            }
             );
         });
 }

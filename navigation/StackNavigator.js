@@ -8,14 +8,14 @@ import Comment from '../screens/Comment';
 import UpdateDetails from '../screens/UpdateDetails';
 import Listing from "../screens/Listing";
 import { createAppContainer } from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import { createStackNavigator } from 'react-navigation-stack';
 
 export const HomeNavigator = createAppContainer(createStackNavigator(
   {
-    Home: { 
+    Home: {
       screen: Home,
       navigationOptions: {
-      	title: 'Home'
+        title: 'Home'
       }
     },
     Comment: {
@@ -24,34 +24,34 @@ export const HomeNavigator = createAppContainer(createStackNavigator(
         title: 'Comment'
       }
     },
-      Post: {
-        screen: Post,
-          navigationOptions: {
-            title: ' '
-          }
+    Post: {
+      screen: Post,
+      navigationOptions: {
+        title: ' '
       }
+    }
   }
 ));
 
 HomeNavigator.navigationOptions = ({ navigation }) => {
-    let tabBarVisible = true
-    if (navigation.state.routes.some(route => route.routeName === 'Map')) {
-        tabBarVisible = false
-    }
-    if (navigation.state.routes.some(route => route.routeName === 'Comment')) {
-      tabBarVisible = false
-    }
-    if (navigation.state.routes.some(route => route.routeName === 'Post')) {
-        tabBarVisible = false
-    }
-    return {
-        tabBarVisible,
-    }
+  let tabBarVisible = true
+  if (navigation.state.routes.some(route => route.routeName === 'Map')) {
+    tabBarVisible = false
+  }
+  if (navigation.state.routes.some(route => route.routeName === 'Comment')) {
+    tabBarVisible = false
+  }
+  if (navigation.state.routes.some(route => route.routeName === 'Post')) {
+    tabBarVisible = false
+  }
+  return {
+    tabBarVisible,
+  }
 }
 
 export const SearchNavigator = createAppContainer(createStackNavigator(
   {
-    Search: { 
+    Search: {
       screen: Search,
       navigationOptions: {
         title: 'Search'
@@ -62,10 +62,10 @@ export const SearchNavigator = createAppContainer(createStackNavigator(
 
 export const ListingNavigator = createAppContainer(createStackNavigator(
   {
-      Listing: {
+    Listing: {
       screen: Listing,
       navigationOptions: {
-       headerShown: false
+        headerShown: false
       }
     }
   }
@@ -73,38 +73,53 @@ export const ListingNavigator = createAppContainer(createStackNavigator(
 
 export const ActivityNavigator = createAppContainer(createStackNavigator(
   {
-    Activity: { 
+    Activity: {
       screen: Activity,
       navigationOptions: {
         title: 'Activity'
+      }
+    }, Comment: {
+      screen: Comment,
+      navigationOptions: {
+        title: 'Comment'
       }
     }
   }
 ));
 
+ActivityNavigator.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true
+  if (navigation.state.routes.some(route => route.routeName === 'Comment')) {
+    tabBarVisible = false
+  }
+  return {
+    tabBarVisible,
+  }
+}
+
 export const ProfileNavigator = createAppContainer(createStackNavigator(
   {
-    Profile: { 
+    Profile: {
       screen: Profile,
       navigationOptions: {
         title: 'Profile'
       }
     },
-      UpdateDetails: {
-        screen:UpdateDetails,
-          navigationOptions: {
-            title: 'Edit user details'
-          }
+    UpdateDetails: {
+      screen: UpdateDetails,
+      navigationOptions: {
+        title: 'Edit user details'
       }
+    }
   }
 ));
 
 ProfileNavigator.navigationOptions = ({ navigation }) => {
-    let tabBarVisible = true
-    if (navigation.state.routes.some(route => route.routeName === 'UpdateDetails')) {
-        tabBarVisible = false
-    }
-    return {
-        tabBarVisible,
-    }
+  let tabBarVisible = true
+  if (navigation.state.routes.some(route => route.routeName === 'UpdateDetails')) {
+    tabBarVisible = false
+  }
+  return {
+    tabBarVisible,
+  }
 }
