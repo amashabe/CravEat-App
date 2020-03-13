@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as Location from 'expo-location';
 import { updateDescription, uploadPost, updateRecipe, updateLocation } from '../actions/post'
-import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity, KeyboardAvoidingView, StatusBar } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import styles from '../styles';
 import ImagePicker from "./ImagePicker";
@@ -47,6 +47,7 @@ class Post extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={100}>
+                  <StatusBar hidden={true} />
                 <Modal animationType='slide' transparent={false} visible={this.state.showModal}>
                     <SafeAreaView style={[styles.container, styles.center]}>
                         <FlatList

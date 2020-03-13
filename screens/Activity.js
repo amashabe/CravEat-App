@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles'
 import { connect } from 'react-redux'
-import { Text, View, FlatList, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { getPost } from '../actions/post';
 import db from '../config/firebase';
 import moment from 'moment';
@@ -71,6 +71,7 @@ class Activity extends React.Component {
         if (this.state.notification.length <= 0) return <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
         return (
             <View style={{ flex: 1, backgroundColor: '#fff' }}>
+                  <StatusBar hidden={true} />
                 <FlatList
                     onRefresh={() => this.getNotifications()}
                     refreshing={false}

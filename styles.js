@@ -45,14 +45,14 @@ export default styles = StyleSheet.create({
     margin: 5
   },
   input: {
-    width: width * .90,
-    margin: 15,
-    padding: 15,
+    width: width * .95,
+    margin: 7,
+    padding: 7,
     alignSelf: 'center',
     borderColor: '#d3d3d3',
     borderWidth: 1,
-    borderRadius: 50,
-    fontSize: 16,
+    borderRadius: 10,
+    fontSize: 12,
   },
   space: {
     alignItems: 'center',

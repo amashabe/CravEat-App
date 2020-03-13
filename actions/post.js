@@ -127,6 +127,9 @@ export const addComment = (text, post) => async (dispatch, getState) => {
 			commenterName: username,
 			createdAt: new Date().getTime(),
 		}
+		db.collection('posts').doc(post.id).update({
+			comments: firebase.firestore.FieldValue.arrayUnion(comment)
+		  })
 		comment.postId = post.id
 		comment.postPhoto = post.postPhoto
 		comment.uid = post.uid

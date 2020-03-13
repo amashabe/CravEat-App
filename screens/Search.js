@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../styles'
-import { View, Text, SafeAreaView, TextInput, FlatList, Image, Dimensions } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, FlatList, Image, Dimensions, StatusBar } from 'react-native';
 import db from '../config/firebase';
 const { width } = Dimensions.get('window');
 
@@ -23,6 +23,8 @@ class Search extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ff' }}>
+          <StatusBar hidden={true} />
+           <StatusBar hidden={true} />
         <TextInput
           style={{
             width: width * .90,

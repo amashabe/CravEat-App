@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, Image, Dimensions } from 'react-native';
+import { View, ActivityIndicator, Image, Dimensions, StatusBar } from 'react-native';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { getUser } from '../actions/user';
@@ -25,6 +25,7 @@ class Loading extends Component {
     render() {
         return (
             <View >
+                  <StatusBar hidden={true} />
                 <Image source={require('../assets/splash.png')} style={{ height: height * 1, width: width * 1 }} />
             </View>
         );

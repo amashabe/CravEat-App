@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Image, Dimensions, ActivityIndicator } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Image, Dimensions, ActivityIndicator, StatusBar } from 'react-native';
 import { connect } from 'react-redux'
 import { updateEmail, updatePassword, login } from '../actions/user'
 import styles from '../styles';
@@ -10,6 +10,7 @@ class SignIn extends React.Component {
 	render() {
 		return (
 			<KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={-100}>
+				  <StatusBar hidden={true} />
 				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 					<Image source={require('../assets/icon.png')} style={{ justifyContent: 'center', width: 100, height: 100, alignItems: 'center', marginBottom: 20 }} />
 				</View>

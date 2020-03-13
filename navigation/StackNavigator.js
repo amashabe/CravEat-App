@@ -15,7 +15,7 @@ export const HomeNavigator = createAppContainer(createStackNavigator(
     Home: {
       screen: Home,
       navigationOptions: {
-        title: 'Home'
+        headerShown: false
       }
     },
     Comment: {
@@ -54,7 +54,7 @@ export const SearchNavigator = createAppContainer(createStackNavigator(
     Search: {
       screen: Search,
       navigationOptions: {
-        title: 'Search'
+        headerShown: false
       }
     }
   }
@@ -76,7 +76,7 @@ export const ActivityNavigator = createAppContainer(createStackNavigator(
     Activity: {
       screen: Activity,
       navigationOptions: {
-        title: 'Activity'
+        headerShown: false
       }
     }, Comment: {
       screen: Comment,
@@ -102,7 +102,7 @@ export const ProfileNavigator = createAppContainer(createStackNavigator(
     Profile: {
       screen: Profile,
       navigationOptions: {
-        title: 'Profile'
+        headerShown: false
       }
     },
     UpdateDetails: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles'
 import { connect } from 'react-redux'
-import { Text, View, TextInput, FlatList, Image, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TextInput, FlatList, Image, KeyboardAvoidingView, StatusBar } from 'react-native';
 import { addComment, getComments } from '../actions/post';
 
 class Comment extends React.Component {
@@ -23,7 +23,8 @@ class Comment extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView enabled behavior='padding' style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <StatusBar hidden={true} />
         <FlatList
           keyExtractor={(item) => JSON.stringify(item.createdAt)}
           data={this.props.post.comments}
@@ -36,14 +37,16 @@ class Comment extends React.Component {
               </View>
             </View>
           )} />
-        <TextInput
-          style={styles.input}
-          onChangeText={(comment) => this.setState({ comment })}
-          value={this.state.comment}
-          returnKeyType='send'
-          placeholder='Add Comment'
-          onSubmitEditing={this.postComment} />
-      </KeyboardAvoidingView>
+        <KeyboardAvoidingView enabled behavior='padding' keyboardVerticalOffset={75}>
+          <TextInput
+            style={styles.input}
+            onChangeText={(comment) => this.setState({ comment })}
+            value={this.state.comment}
+            returnKeyType='send'
+            placeholder='Add Comment'
+            onSubmitEditing={this.postComment} />
+        </KeyboardAvoidingView>
+      </View>
     );
   }
 }

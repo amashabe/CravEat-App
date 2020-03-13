@@ -1,6 +1,6 @@
 import React from 'react';
-import { Ionicons, EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
+import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+import { Text, View, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
@@ -8,12 +8,12 @@ import { getPosts, likePost, unlikePost } from '../actions/post'
 import styles from '../styles';
 
 class Home extends React.Component {
-  componentDidUpdate() {
-      this.props.getPosts();
-  }
+  // componentDidUpdate() {
+  //     this.props.getPosts();
+  // }
 
   componentDidMount() {
-    this.props.getPosts();
+    this.props.getPosts(); 
   }
 
   likePost = (post) => {
