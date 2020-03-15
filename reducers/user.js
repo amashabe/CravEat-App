@@ -1,6 +1,6 @@
-import { SIGN_IN, UPDATE_BIO, UPDATE_EMAIL, UPDATE_USERNAME, UPDATE_PASSWORD, SIGN_OUT, LOADING } from '../types';
+import { SIGN_IN, UPDATE_BIO, UPDATE_EMAIL, UPDATE_USERNAME, UPDATE_PASSWORD, SIGN_OUT, LOADING, GET_TOKEN } from '../types';
 
-const initialState ={
+const initialState = {
     email: null,
     password: null,
     bio: null,
@@ -24,6 +24,8 @@ export default function (state = {}, action) {
             return { ...state, bio: action.payload }
         case LOADING:
             return { ...state, loading: action.payload }
+        case GET_TOKEN:
+            return { ...state, token: action.payload }
         default:
             return state
     }

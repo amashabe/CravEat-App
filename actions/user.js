@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
+import { allowNotifications } from './';
 import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR } from '../types';
 
 export const updateEmail = (email) => {
@@ -39,22 +40,6 @@ export const getValidator = text => dispatch => {
 }
 
 export const login = () => (dispatch, getState) => {
-	// try {
-	// 	dispatch({ type: LOADING, payload: true });
-	// 	const { email, password } = getState().user;
-	// 	if (email !== undefined && password !== undefined) {
-	// 		const response = await firebase.auth().signInWithEmailAndPassword(email, password);
-	// 		dispatch(getUser(response.user.uid));
-	// 	}
-	// 	else {
-	// 		dispatch({ type: LOADING, payload: false });
-	// 		dispatch({ type: SET_ERROR, payload: "Fill all required fields" })
-	// 	}
-
-	// } catch (e) {
-	// 	dispatch({ type: LOADING, payload: false })
-	// 	dispatch(getValidator(e.code))
-	// }
 	dispatch({ type: LOADING, payload: true });
 	dispatch({ type: SET_ERROR, payload: null })
 	const { email, password } = getState().user;
@@ -63,6 +48,7 @@ export const login = () => (dispatch, getState) => {
 			dispatch({ type: LOADING, payload: false });
 			dispatch({ type: SET_ERROR, payload: null })
 			dispatch(getUser(response.user.uid));
+			dispatch(allowNotifications())
 		}).catch(error => {
 			dispatch({ type: LOADING, payload: false })
 			const errorCode = error.code;
@@ -121,13 +107,14 @@ export const signup = () => (dispatch, getState) => {
 				email: email,
 				username: username,
 				bio: bio,
-				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/no-img.png?alt=media&token=1db1f8f7-9eba-4a8f-8df7-37ea638e9dc0',
+				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/pp.jpg?alt=media&token=8a48ae8e-730e-4213-9ce7-e8e295898921',
 				token: null,
 				followed: [],
 				following: []
 			}
 			db.collection('users').doc(response.user.uid).set(user)
 			dispatch({ type: LOADING, payload: false })
+			dispatch(allowNotifications())
 			dispatch({ type: SIGN_IN, payload: user })
 		}).catch(error => {
 			dispatch({ type: LOADING, payload: false })

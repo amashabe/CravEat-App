@@ -13,3 +13,4 @@ export const GET_COMMENTS = 'GET_COMMENTS';
 export const GET_POST = 'GET_POST';
 export const LOADING = 'LOADING';
 export const SET_ERROR = 'SET_ERROR';
+export const GET_TOKEN = 'GET_TOKEN';

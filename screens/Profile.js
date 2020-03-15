@@ -31,7 +31,7 @@ class Profile extends React.Component {
           <Text style={{ top: height * 0.175, left: width * 0.30, fontSize: 17, fontWeight: 'bold', color: '#fff' }}>@{this.props.user.username}</Text>
           <Text style={{ top: height * 0.177, left: width * 0.30, fontSize: 13, color: '#fff' }}>{this.props.user.email}</Text>
         </LinearGradient>
-        <TouchableOpacity style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
+        <TouchableOpacity onPress={() => this.props.signOut()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
           <Feather style={{ color: '#fff' }} name='settings' size={30} />
         </TouchableOpacity>
         <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']} style={{ height: height * 0.08 }}>
