@@ -1,4 +1,4 @@
-import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS, GET_POST } from '../types';
+import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS, GET_POST, SET_TOKEN } from '../types';
 
 export default function (state = null, action) {
     switch (action.type) {

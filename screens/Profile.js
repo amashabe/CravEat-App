@@ -1,18 +1,19 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, StatusBar } from 'react-native';
 import { signOut } from '../actions/user';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
-import styles from '../styles'
+import { Button, Paragraph, Menu, Divider, Provider } from 'react-native-paper';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 class Profile extends React.Component {
   state = {
-    counter: null
+    counter: null,
+      visible: false
   }
   componentDidMount() {
     let counter = 1;
@@ -22,6 +23,9 @@ class Profile extends React.Component {
       }
     })
   }
+    _openMenu = () => this.setState({ visible: true });
+    _closeMenu = () => this.setState({ visible: false });
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1, position: 'relative' }}>
@@ -31,8 +35,11 @@ class Profile extends React.Component {
           <Text style={{ top: height * 0.175, left: width * 0.30, fontSize: 17, fontWeight: 'bold', color: '#fff' }}>@{this.props.user.username}</Text>
           <Text style={{ top: height * 0.177, left: width * 0.30, fontSize: 13, color: '#fff' }}>{this.props.user.email}</Text>
         </LinearGradient>
-        <TouchableOpacity onPress={() => this.props.signOut()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
-          <Feather style={{ color: '#fff' }} name='settings' size={30} />
+        <TouchableOpacity onPress={() => this._openMenu()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
+            <Menu style={{margin: 7, position: 'absolute', top: height * 0.01, marginTop: 20, paddingRight: 20}} visible={this.state.visible} onDismiss={this._closeMenu} anchor={ <MaterialCommunityIcons style={{ color: '#fff' }} name='dots-vertical' size={30} /> }>
+                <Menu.Item onPress={() => {}} title="Edit"  icon="webcam"/>
+                <Menu.Item onPress={() => this.props.signOut()} title="Sign Out." />
+            </Menu>
         </TouchableOpacity>
         <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']} style={{ height: height * 0.08 }}>
           <View style={{ flexDirection: 'row', marginTop: 5 }}>

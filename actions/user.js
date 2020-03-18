@@ -1,12 +1,15 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
-import { allowNotifications } from './';
-import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR } from '../types';
+import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN } from '../types';
 
 export const updateEmail = (email) => {
 	return {
 		type: UPDATE_EMAIL, payload: email
 	}
+}
+
+export const updateToken = text => {
+	return {type: SET_TOKEN, payload: text}
 }
 
 export const updatePassword = (password) => {
@@ -27,18 +30,6 @@ export const updateBio = (bio) => {
 	}
 }
 
-export const getValidator = text => dispatch => {
-	switch (text) {
-		case "auth/argument-error":
-			return dispatch({ type: SET_ERROR, payload: 'Email and Password must be a valid string' });
-		case "auth/user-not-found":
-			return dispatch({ type: SET_ERROR, payload: 'Email and Password Incorrect.' });
-		default:
-			return dispatch({ type: SET_ERROR, payload: 'Email and Password Incorrect.' });
-	}
-
-}
-
 export const login = () => (dispatch, getState) => {
 	dispatch({ type: LOADING, payload: true });
 	dispatch({ type: SET_ERROR, payload: null })
@@ -48,7 +39,6 @@ export const login = () => (dispatch, getState) => {
 			dispatch({ type: LOADING, payload: false });
 			dispatch({ type: SET_ERROR, payload: null })
 			dispatch(getUser(response.user.uid));
-			dispatch(allowNotifications())
 		}).catch(error => {
 			dispatch({ type: LOADING, payload: false })
 			const errorCode = error.code;
@@ -94,7 +84,7 @@ export const updateUser = () => async (dispatch, getState) => {
 
 export const signup = () => (dispatch, getState) => {
 	dispatch({ type: LOADING, payload: true })
-	const { email, password, username, bio } = getState().user;
+	const { email, password, username, bio, token } = getState().user;
 	if (email === undefined || password === undefined || username === undefined || bio === undefined) {
 		dispatch({ type: LOADING, payload: false })
 		dispatch({ type: SET_ERROR, payload: "Fill all required fields" })
@@ -108,13 +98,12 @@ export const signup = () => (dispatch, getState) => {
 				username: username,
 				bio: bio,
 				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/pp.jpg?alt=media&token=8a48ae8e-730e-4213-9ce7-e8e295898921',
-				token: null,
+				token: token,
 				followed: [],
 				following: []
 			}
 			db.collection('users').doc(response.user.uid).set(user)
 			dispatch({ type: LOADING, payload: false })
-			dispatch(allowNotifications())
 			dispatch({ type: SIGN_IN, payload: user })
 		}).catch(error => {
 			dispatch({ type: LOADING, payload: false })

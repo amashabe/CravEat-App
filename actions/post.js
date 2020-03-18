@@ -3,7 +3,6 @@ import db from '../config/firebase';
 import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS, GET_POST } from '../types';
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy';
-import { sendNotification } from './';
 
 export const updateDescription = (text) => {
 	return { type: UPDATE_DESCRIPTION, payload: text }
@@ -89,7 +88,6 @@ export const likePost = (post) => (dispatch, getState) => {
 			type: 'LIKE',
 			read: false
 		})
-		dispatch(sendNotification(post.uid, 'Liked Your Photo'))
 		dispatch(getPosts())
 	} catch (e) {
 		alert(e)
@@ -140,7 +138,6 @@ export const addComment = (text, post) => async (dispatch, getState) => {
 		comments.push(comment)
 		db.collection('notifications').doc().set(comment)
 		dispatch({ type: GET_COMMENTS, payload: comments.reverse() })
-		dispatch(sendNotification(post.uid, text))
 		dispatch(getPosts())
 	} catch (e) {
 		console.error(e)

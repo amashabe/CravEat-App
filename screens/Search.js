@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../styles'
 import { View, Text, SafeAreaView, TextInput, FlatList, Image, Dimensions, StatusBar } from 'react-native';
 import db from '../config/firebase';
+import {Searchbar} from 'react-native-paper';
 const { width } = Dimensions.get('window');
 
 class Search extends React.Component {
@@ -25,22 +26,12 @@ class Search extends React.Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: '#ff' }}>
           <StatusBar hidden={true} />
            <StatusBar hidden={true} />
-        <TextInput
-          style={{
-            width: width * .90,
-            margin: 15,
-            padding: 15,
-            alignSelf: 'center',
-            borderColor: '#d3d3d3',
-            borderWidth: 1,
-            borderRadius: 50,
-            fontSize: 16,
-          }}
-          onChangeText={(search) => this.setState({ search })}
-          value={this.state.search}
-          returnKeyType='send'
-          placeholder='Search'
-          onSubmitEditing={this.searchUser} />
+           <Searchbar
+               onChangeText={(search) => this.setState({ search })}
+               value={this.state.search}
+               returnKeyType='send'
+               placeholder='Search'
+               onSubmitEditing={this.searchUser} />
         <FlatList
           data={this.state.query}
           keyExtractor={(item) => JSON.stringify(item.date)}

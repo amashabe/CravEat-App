@@ -11,7 +11,7 @@ export default createAppContainer(createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: ({ focused }) => (
-                    <AntDesign name='home' size={32} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
+                    <AntDesign name='home' size={28} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
                 )
             }
         },
@@ -20,7 +20,7 @@ export default createAppContainer(createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: ({ focused }) => (
-                    <AntDesign name='search1' size={32} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
+                    <AntDesign name='search1' size={28} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
                 )
             }
         },
@@ -29,7 +29,7 @@ export default createAppContainer(createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: ({ focused }) => (
-                    <MaterialCommunityIcons name='map-marker-radius' size={32} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
+                    <MaterialCommunityIcons name='map-marker-radius' size={28} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
                 )
             }
         },
@@ -38,7 +38,7 @@ export default createAppContainer(createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: ({ focused }) => (
-                    <AntDesign name={focused ? 'heart' : 'hearto'} size={32} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
+                    <AntDesign name={focused ? 'heart' : 'hearto'} size={28} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
                 )
             }
         },
@@ -47,7 +47,7 @@ export default createAppContainer(createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: ({ focused }) => (
-                    <Feather name='user' size={32} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
+                    <Feather name='user' size={28} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
                 )
             }
         }

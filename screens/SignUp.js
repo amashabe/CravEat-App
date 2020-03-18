@@ -1,12 +1,47 @@
 import React from 'react';
 import { Text, View, TextInput, TouchableOpacity, Dimensions, Image, KeyboardAvoidingView, ActivityIndicator, StatusBar } from 'react-native';
 import { connect } from 'react-redux'
-import { updateEmail, updatePassword, updateUsername, updateBio, signup } from '../actions/user';
+import { updateEmail, updatePassword, updateUsername, updateBio, signup, updateToken } from '../actions/user';
 import Hr from "react-native-hr-component";
 import styles from '../styles'
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 const { width } = Dimensions.get('window');
 
 class SignUp extends React.Component {
+	state = {
+		expoPushToken: '',
+	}
+	registerForPushNotificationsAsync = async () => {
+		if (Constants.isDevice) {
+			const { status: existingStatus } = await Permissions.getAsync(
+				Permissions.NOTIFICATIONS
+			);
+			let finalStatus = existingStatus;
+			if (existingStatus !== 'granted') {
+				const { status } = await Permissions.askAsync(
+					Permissions.NOTIFICATIONS
+				);
+				finalStatus = status;
+			}
+			if (finalStatus !== 'granted') {
+				alert('Failed to get push token for push notification!');
+				return;
+			}
+			let token = await Notifications.getExpoPushTokenAsync();
+			if (token != null){
+				this.props.updateToken(token);
+			}
+		} else {
+			alert('Must use physical device for Push Notifications');
+		}
+	};
+
+	componentDidMount() {
+		this.registerForPushNotificationsAsync();
+	}
+
 	render() {
 		return (
 			<KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={-60}>
@@ -55,7 +90,7 @@ class SignUp extends React.Component {
 				{
 					this.props.UI.errors ? <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'red', padding: 8 }}>{this.props.UI.errors}</Text> : null
 				}
-				<TouchableOpacity disabled={this.props.UI.loading} style={{ marginTop: 2, borderRadius: 3, backgroundColor: this.props.UI.loading ? '#FF9F67' : '#ff741a', width: width * .95, margin: 7, padding: 8, alignSelf: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 4, fontSize: 16, height: 40 }}
+				<TouchableOpacity disabled={this.props.UI.loading} style={{ marginTop: 2, backgroundColor: this.props.UI.loading ? '#FF9F67' : '#ff741a', width: width * .95, margin: 7, padding: 8, alignSelf: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 4, fontSize: 16, height: 40 }}
 					onPress={() => this.props.signup()}>
 					<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 						{
@@ -81,4 +116,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, { updateEmail, updatePassword, updateUsername, updateBio, signup })(SignUp)
+export default connect(mapStateToProps, { updateEmail, updatePassword, updateUsername, updateBio, signup, updateToken })(SignUp)
