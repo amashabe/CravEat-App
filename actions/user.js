@@ -102,7 +102,8 @@ export const signup = () => (dispatch, getState) => {
 				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/pp.jpg?alt=media&token=8a48ae8e-730e-4213-9ce7-e8e295898921',
 				token: token,
 				followed: [],
-				following: []
+				following: [],
+				createdAt: new Date().getTime(),
 			}
 			db.collection('users').doc(response.user.uid).set(user)
 			dispatch({ type: LOADING, payload: false })

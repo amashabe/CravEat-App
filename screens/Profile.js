@@ -1,12 +1,15 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, StatusBar } from 'react-native';
 import { signOut } from '../actions/user';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
-import UpdateDetails from "./UpdateDetails";
 import { Button, Paragraph, Menu, Divider, Provider } from 'react-native-paper';
+
+import UserDetails from './UserDetails';
+import UserPosts from './UserPosts';
+import UserPins from './UserPins';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -14,10 +17,23 @@ const height = Dimensions.get('screen').height;
 class Profile extends React.Component {
   state = {
     counter: 0,
-      visible: false
+    visible: false,
+    tab: 'USER'
+  }
+
+  _pinTab = () => {
+    this.setState({ tab: "PINS" })
+  };
+
+  _postTab = () => {
+    this.setState({ tab: "POSTS" });
+  };
+
+  _userTab = () => {
+    this.setState({ tab: 'USER' })
   }
   componentDidMount() {
-   const {counter} = this.state;
+    const { counter } = this.state;
 
     this.props.post.feed.map(post => {
       if (this.props.user.uid === post.uid) {
@@ -25,10 +41,11 @@ class Profile extends React.Component {
       }
     })
   }
-    _openMenu = () => this.setState({ visible: true });
-    _closeMenu = () => this.setState({ visible: false });
+  _openMenu = () => this.setState({ visible: true });
+  _closeMenu = () => this.setState({ visible: false });
 
   render() {
+    const { tab } = this.state;
     return (
       <SafeAreaView style={{ flex: 1, position: 'relative' }}>
         <StatusBar hidden={true} />
@@ -38,31 +55,34 @@ class Profile extends React.Component {
           <Text style={{ top: height * 0.177, left: width * 0.30, fontSize: 13, color: '#fff' }}>{this.props.user.email}</Text>
         </LinearGradient>
         <TouchableOpacity onPress={() => this._openMenu()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
-            <Menu style={{margin: 7, position: 'absolute', top: height * 0.01, marginTop: 20, paddingRight: 20}} visible={this.state.visible} onDismiss={this._closeMenu} anchor={ <MaterialCommunityIcons style={{ color: '#fff' }} name='dots-vertical' size={30} /> }>
-                <Menu.Item onPress={() => this.props.navigation.navigate('UpdateDetails')} title="Edit"  />
-                <Menu.Item onPress={() => this.props.signOut()} title="Sign Out." />
-            </Menu>
+          <Menu style={{ margin: 7, position: 'absolute', top: height * 0.01, marginTop: 20, paddingRight: 20 }} visible={this.state.visible} onDismiss={this._closeMenu} anchor={<MaterialCommunityIcons style={{ color: '#fff' }} name='dots-vertical' size={30} />}>
+            <Menu.Item onPress={() => this.props.navigation.navigate('UpdateDetails')} title="Edit" />
+            <Menu.Item onPress={() => this.props.signOut()} title="Sign Out." />
+          </Menu>
         </TouchableOpacity>
-        <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']} style={{ height: height * 0.08 }}>
-          <View style={{ flexDirection: 'row', marginTop: 5 }}>
-            <View style={{ left: width * 0.30 }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{this.state.counter}</Text>
-              <Text>POSTS</Text>
-            </View>
-            <View style={{ left: width * 0.35, }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{this.props.user.followed.length}</Text>
-              <Text>FOLLOWERS</Text>
-            </View>
-            <View style={{ left: width * 0.40, }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{this.props.user.following.length}</Text>
-              <Text>FOLLOWING</Text>
-            </View>
+        <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']} style={{ height: height * 0.08, borderBottomWidth: 0.5, borderColor: '#fff' }}>
+          <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'space-evenly', left: width * 0.12, }}>
+            <TouchableOpacity style={{ marginVertical: 9 }} onPress={() => this._userTab()}>
+              <Text style={{ fontWeight: 'bold' }}>Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginVertical: 9 }} onPress={() => this._postTab()} >
+              <Text style={{ fontWeight: 'bold' }}>Posts</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginVertical: 9 }} onPress={() => this._pinTab()} >
+              <Text style={{ fontWeight: 'bold' }}>Pins</Text>
+            </TouchableOpacity>
           </View>
         </LinearGradient>
-        <Image
-          style={{ width: 90, height: 90, borderRadius: 90 / 2, position: 'absolute', left: width * 0.02, right: 0, borderColor: '#fff', borderWidth: 2, top: height * 0.175 }}
-          source={{ uri: this.props.user.photo }}
-        />
+        <TouchableOpacity
+          style={{ width: 94, height: 94, borderRadius: 94 / 2, position: 'absolute', left: width * 0.021, right: 0, borderColor: '#fff', borderWidth: 2, top: height * 0.175 }}>
+          <Image source={{ uri: this.props.user.photo }} style={{ width: 90, height: 90, borderRadius: 90 / 2, }} />
+        </TouchableOpacity>
+
+        {/* <FontAwesome style={{ position: 'absolute', top: height * 0.25, left: width * 0.09 }} name='camera' size={30} /> */}
+        {tab === "USER" && <UserDetails />}
+        {tab === "POSTS" && <UserPosts />}
+        {tab === "PINS" && <UserPins />}
+
       </SafeAreaView>
     );
   }
@@ -77,15 +97,22 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, { signOut })(Profile)
 
-/** <View style={styles.container}>
-        <Text> Profile</Text>
-        <Image
-          style={{ width: 50, height: 50 }}
-          source={{ uri: this.props.user.photo }}
-        />
-        <Text>{this.props.user.email}</Text>
-        <Text>{this.props.user.username}</Text>
-        <Text>{this.props.user.bio}</Text>
-        <Button title='Logout' onPress={() => this.props.signOut()} />
-        <Button title='Edit Details' onPress={() => this.props.navigation.navigate('UpdateDetails')} />
-      </View> */
+/*<LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']} style={{ height: height * 0.05, borderColor: '#fff', borderBottomWidth: 0.5 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginVertical: 7 }}>
+            <View>
+              <TouchableOpacity onPress={() => this._userTab()}>
+                <Text>USER</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity onPress={() => this._postTab()}>
+                <Text>POSTS</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity onPress={() => this._pinTab()}>
+                <Text>PIN</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </LinearGradient>*/

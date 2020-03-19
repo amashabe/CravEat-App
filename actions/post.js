@@ -1,11 +1,11 @@
 import firebase from 'firebase';
 import db from '../config/firebase';
-import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS, GET_POST } from '../types';
+import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCATION, GET_COMMENTS, GET_POST, GET_USER_POSTS } from '../types';
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy';
 
 export const clearPhoto = () => {
-	return {type: UPDATE_PHOTO, payload: ''}
+	return { type: UPDATE_PHOTO, payload: '' }
 }
 
 export const updateDescription = (text) => {
@@ -75,23 +75,44 @@ export const getPosts = () => async (dispatch, getState) => {
 	}
 }
 
+export const getUserPosts = () => async (dispatch, getState) => {
+	try {
+		const { user } = getState();
+		const posts = await db.collection('posts').get()
+
+		let array = []
+		posts.forEach((post) => {
+			if (user.uid === post.data().uid) {
+				array.push(post.data())
+			}
+
+		})
+		dispatch({ type: GET_USER_POSTS, payload: orderBy(array, 'createdAt', 'desc') })
+	} catch (e) {
+		alert(e)
+	}
+}
+
 export const likePost = (post) => (dispatch, getState) => {
 	const { uid, username, photo } = getState().user
 	try {
 		db.collection('posts').doc(post.id).update({
 			likes: firebase.firestore.FieldValue.arrayUnion(uid)
 		})
-		db.collection('notifications').doc().set({
-			postId: post.id,
-			postPhoto: post.postPhoto,
-			likerId: uid,
-			likerPhoto: photo,
-			likerName: username,
-			uid: post.uid,
-			createdAt: new Date().getTime(),
-			type: 'LIKE',
-			read: false
-		})
+		if (uid !== post.uid) {
+			db.collection('notifications').doc().set({
+				postId: post.id,
+				postPhoto: post.postPhoto,
+				likerId: uid,
+				likerPhoto: photo,
+				likerName: username,
+				uid: post.uid,
+				createdAt: new Date().getTime(),
+				type: 'LIKE',
+				read: false
+			})
+		}
+
 		dispatch(getPosts())
 	} catch (e) {
 		alert(e)
@@ -140,7 +161,11 @@ export const addComment = (text, post) => async (dispatch, getState) => {
 		comment.type = 'COMMENT'
 		comment.read = false
 		comments.push(comment)
-		db.collection('notifications').doc().set(comment)
+
+		if (uid !== post.uid) {
+			db.collection('notifications').doc().set(comment)
+		}
+
 		dispatch({ type: GET_COMMENTS, payload: comments.reverse() })
 		dispatch(getPosts())
 	} catch (e) {

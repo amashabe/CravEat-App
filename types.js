@@ -1,5 +1,6 @@
 export const UPDATE_DESCRIPTION = 'UPDATE_DESCRIPTION';
 export const GET_POSTS = 'GET_POSTS';
+export const GET_USER_POSTS = 'GET_USER_POSTS';
 export const SIGN_IN = 'SIGN_IN';
 export const UPDATE_EMAIL = 'UPDATE_EMAIL';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';

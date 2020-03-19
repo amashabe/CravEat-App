@@ -36,7 +36,7 @@ class Search extends React.Component {
           data={this.state.query}
           keyExtractor={(item) => JSON.stringify(item.date)}
           renderItem={({ item }) => (
-            <View style={[styles.row, styles.space]}>
+            <View key={item.uid} style={[styles.row, styles.space]}>
               <Image style={styles.roundImage} source={{ uri: item.photo }} />
               <View style={{
                 flex: 1,

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, Image, Dimensions, StatusBar } from 'react-native';
+import { View, ActivityIndicator, Dimensions, StatusBar } from 'react-native';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { getUser } from '../actions/user';
-import styles from "../styles";
 
-const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
+const { height, width } = Dimensions.get('window');
 
 class Loading extends Component {
     componentDidMount = () => {
@@ -24,9 +22,9 @@ class Loading extends Component {
     }
     render() {
         return (
-            <View >
-                  <StatusBar hidden={true} />
-                <Image source={require('../assets/splash.png')} style={{ height: height * 1, width: width * 1 }} />
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <StatusBar hidden={true} />
+                <ActivityIndicator size={65} color="#ff741a" />
             </View>
         );
     }
