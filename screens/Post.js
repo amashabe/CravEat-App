@@ -1,11 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as Location from 'expo-location';
-import { updateDescription, uploadPost, updateRecipe, updateLocation } from '../actions/post'
-import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity, KeyboardAvoidingView, StatusBar } from 'react-native';
+import * as Location from 'expo-location'
+import {SimpleLineIcons} from '@expo/vector-icons';
+import { updateDescription, uploadPost, updateRecipe, updateLocation, clearPhoto } from '../actions/post'
+import { FlatList, Modal, SafeAreaView, Text, View, TextInput, Image, TouchableOpacity, KeyboardAvoidingView, StatusBar, Dimensions } from 'react-native';
 import * as Permissions from 'expo-permissions';
+import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../styles';
 import ImagePicker from "./ImagePicker";
+import moment from "moment";
+
+const {width, height} = Dimensions.get('window');
 const GOOGLE_API = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 const googleApiKey = 'AIzaSyAgjhZeIV4iIBe4cDyudFsyVGgVFK3P38U';
 
@@ -46,7 +51,7 @@ class Post extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={100}>
+            <KeyboardAvoidingView style={{justifyContent: 'center', alignItems: 'center', flex: 1, marginBottom: 100}} behavior="padding" enabled keyboardVerticalOffset={100}>
                   <StatusBar hidden={true} />
                 <Modal animationType='slide' transparent={false} visible={this.state.showModal}>
                     <SafeAreaView style={[styles.container, styles.center]}>
@@ -61,8 +66,23 @@ class Post extends React.Component {
                             )} />
                     </SafeAreaView>
                 </Modal>
-                <Image style={styles.postPhoto} source={{ uri: this.props.post.photo }} />
-                <ImagePicker />
+                {
+                    this.props.post.photo ?
+                        <View>
+                            <Image style={{height: this.props.post.photo ? 250 : null, width: width}} source={{ uri: this.props.post.photo }} />
+                            {
+                                <LinearGradient colors={[ 'rgba(0,0,0,0.8)', 'rgba(0,0,0,0.5)','transparent']} style={{position: 'absolute',  paddingHorizontal: width, paddingVertical: height * 0.1}}  >
+                                    {
+                                        <TouchableOpacity  style={{position: 'absolute', margin: 10, left: width * 0.9}}  onPress={() => this.props.clearPhoto()}>
+                                            {this.props.post.photo ? <SimpleLineIcons color="#fff" name='close' size={25} /> : null}
+                                        </TouchableOpacity>
+                                    }
+                                </LinearGradient>
+                            }
+                        </View>
+                         :
+                        <ImagePicker />
+                }
                 <TextInput
                     style={styles.border}
                     value={this.props.post.description}
@@ -70,6 +90,9 @@ class Post extends React.Component {
                     placeholder='Description'
                 />
                 <TextInput
+                    multiline = {true}
+                    numberOfLines = {1}
+                    maxLength={150}
                     style={styles.border}
                     value={this.props.post.recipe}
                     onChangeText={text => this.props.updateRecipe(text)}
@@ -93,4 +116,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { updateDescription, uploadPost, updateRecipe, updateLocation })(Post)
+export default connect(mapStateToProps, { updateDescription, uploadPost, updateRecipe, updateLocation, clearPhoto })(Post)

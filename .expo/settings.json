@@ -1,8 +1,8 @@
 {
+  "urlRandomness": "yn-35i",
   "hostType": "lan",
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": "nx-iw4",
   "https": false
 }

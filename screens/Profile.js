@@ -5,6 +5,7 @@ import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, StatusBa
 import { signOut } from '../actions/user';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
+import UpdateDetails from "./UpdateDetails";
 import { Button, Paragraph, Menu, Divider, Provider } from 'react-native-paper';
 
 const width = Dimensions.get('screen').width;
@@ -12,14 +13,15 @@ const height = Dimensions.get('screen').height;
 
 class Profile extends React.Component {
   state = {
-    counter: null,
+    counter: 0,
       visible: false
   }
   componentDidMount() {
-    let counter = 1;
+   const {counter} = this.state;
+
     this.props.post.feed.map(post => {
       if (this.props.user.uid === post.uid) {
-        this.setState({ counter: counter++ })
+        this.setState({ counter: counter + 1 })
       }
     })
   }
@@ -37,7 +39,7 @@ class Profile extends React.Component {
         </LinearGradient>
         <TouchableOpacity onPress={() => this._openMenu()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
             <Menu style={{margin: 7, position: 'absolute', top: height * 0.01, marginTop: 20, paddingRight: 20}} visible={this.state.visible} onDismiss={this._closeMenu} anchor={ <MaterialCommunityIcons style={{ color: '#fff' }} name='dots-vertical' size={30} /> }>
-                <Menu.Item onPress={() => {}} title="Edit"  icon="webcam"/>
+                <Menu.Item onPress={() => this.props.navigation.navigate('UpdateDetails')} title="Edit"  />
                 <Menu.Item onPress={() => this.props.signOut()} title="Sign Out." />
             </Menu>
         </TouchableOpacity>

@@ -76,9 +76,8 @@ class SignIn extends React.Component {
 				borderColor: '#d3d3d3',
 				borderWidth: 1,
 				fontSize: 16,
-				height: 40
-			}}
-							  onPress={() => this.props.login()}>
+				height: 40}}
+			  	onPress={() => this.props.login()}>
 				<View style={{justifyContent: 'center', alignItems: 'center'}}>
 					{
 						this.props.UI.loading ?

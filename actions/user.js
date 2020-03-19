@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import {Keyboard} from 'react-native';
 import db from '../config/firebase';
 import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN } from '../types';
 
@@ -31,6 +32,7 @@ export const updateBio = (bio) => {
 }
 
 export const login = () => (dispatch, getState) => {
+	Keyboard.dismiss();
 	dispatch({ type: LOADING, payload: true });
 	dispatch({ type: SET_ERROR, payload: null })
 	const { email, password } = getState().user;

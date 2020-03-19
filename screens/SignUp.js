@@ -13,6 +13,7 @@ class SignUp extends React.Component {
 	state = {
 		expoPushToken: '',
 	}
+
 	registerForPushNotificationsAsync = async () => {
 		if (Constants.isDevice) {
 			const { status: existingStatus } = await Permissions.getAsync(

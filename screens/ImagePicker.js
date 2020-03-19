@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Button, Image, View } from 'react-native';
+import { TouchableOpacity, Image, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { connect } from 'react-redux';
+import {FontAwesome, SimpleLineIcons} from '@expo/vector-icons';
 import { updatePhoto } from '../actions/post';
 import { uploadImage } from '../actions/index';
 
@@ -36,14 +37,17 @@ class ImagePickerExample extends React.Component {
 
     render() {
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Button
-                    title="Pick an image from camera roll"
-                    onPress={this._pickImage}
-                />
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <TouchableOpacity onPress={this._pickImage}>
+                    <FontAwesome  name='camera' size={30} />
+                </TouchableOpacity>
             </View>
         );
     }
 }
 
-export default connect(null, { uploadImage, updatePhoto })(ImagePickerExample);
+const mapStateToProps = state => ({
+    post: state.post
+})
+
+export default connect(mapStateToProps, { uploadImage, updatePhoto })(ImagePickerExample);

@@ -8,11 +8,7 @@ import { getPosts, likePost, unlikePost } from '../actions/post'
 import styles from '../styles';
 
 class Home extends React.Component {
-  // componentDidUpdate() {
-  //     this.props.getPosts();
-  // }
-
-  componentDidMount() {
+    componentDidMount() {
     this.props.getPosts(); 
   }
 

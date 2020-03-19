@@ -4,6 +4,10 @@ import { UPDATE_DESCRIPTION, GET_POSTS, UPDATE_RECIPE, UPDATE_PHOTO, UPDATE_LOCA
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy';
 
+export const clearPhoto = () => {
+	return {type: UPDATE_PHOTO, payload: ''}
+}
+
 export const updateDescription = (text) => {
 	return { type: UPDATE_DESCRIPTION, payload: text }
 }
