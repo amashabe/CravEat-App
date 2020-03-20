@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import {Keyboard} from 'react-native';
+import { Keyboard } from 'react-native';
 import db from '../config/firebase';
 import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN } from '../types';
 
@@ -10,7 +10,7 @@ export const updateEmail = (email) => {
 }
 
 export const updateToken = text => {
-	return {type: SET_TOKEN, payload: text}
+	return { type: SET_TOKEN, payload: text }
 }
 
 export const updatePassword = (password) => {
@@ -31,11 +31,11 @@ export const updateBio = (bio) => {
 	}
 }
 
-export const login = () => (dispatch, getState) => {
+export const login = () => async (dispatch, getState) => {
 	Keyboard.dismiss();
 	dispatch({ type: LOADING, payload: true });
 	dispatch({ type: SET_ERROR, payload: null })
-	const { email, password } = getState().user;
+	const { email, password, token } = getState().user;
 	if (email !== undefined && password !== undefined) {
 		firebase.auth().signInWithEmailAndPassword(email, password).then(response => {
 			dispatch({ type: LOADING, payload: false });
@@ -54,7 +54,10 @@ export const login = () => (dispatch, getState) => {
 }
 
 export const getUser = (uid) => async (dispatch, getState) => {
+	const { token } = getState().user
 	try {
+		const updateToken = await db.collection('users').doc(uid).update({ token: token })
+		console.log(updateToken)
 		const user = await db.collection('users').doc(uid).get()
 		dispatch({ type: SIGN_IN, payload: user.data() })
 	} catch (e) {
@@ -85,6 +88,7 @@ export const updateUser = () => async (dispatch, getState) => {
 }
 
 export const signup = () => (dispatch, getState) => {
+	Keyboard.dismiss();
 	dispatch({ type: LOADING, payload: true })
 	const { email, password, username, bio, token } = getState().user;
 	if (email === undefined || password === undefined || username === undefined || bio === undefined) {

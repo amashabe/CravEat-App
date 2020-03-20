@@ -45,7 +45,13 @@ class UserDetails extends Component {
                         <Text style={{ paddingLeft: width * 0.14, }}>{this.props.user.following.length}</Text>
                     </View>
                 </View>
-                <View style={{ paddingTop: 15, paddingBottom: 15 }}>
+                <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ paddingLeft: width * 0.06, fontWeight: 'bold' }}>Bio</Text>
+                        <Text style={{ paddingLeft: width * 0.25, }}>{this.props.user.bio}</Text>
+                    </View>
+                </View>
+                <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ paddingLeft: width * 0.06, fontWeight: 'bold' }}>Bio</Text>
                         <Text style={{ paddingLeft: width * 0.25, }}>{this.props.user.bio}</Text>
