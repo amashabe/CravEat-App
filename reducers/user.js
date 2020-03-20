@@ -1,4 +1,4 @@
-import { SIGN_IN, UPDATE_BIO, UPDATE_EMAIL, UPDATE_USERNAME, UPDATE_PASSWORD, SIGN_OUT, SET_TOKEN } from '../types';
+import { SIGN_IN, UPDATE_BIO, UPDATE_EMAIL, UPDATE_USERNAME, UPDATE_PASSWORD, SIGN_OUT, SET_TOKEN, UPDATE_PROFILE_PICTURE } from '../types';
 
 const initialState = {
     email: null,
@@ -24,6 +24,8 @@ export default function (state = {}, action) {
             return { ...state, bio: action.payload }
         case SET_TOKEN:
             return { ...state, token: action.payload }
+        case UPDATE_PROFILE_PICTURE:
+            return { ...state, profilePicture: action.payload }
         default:
             return state
     }

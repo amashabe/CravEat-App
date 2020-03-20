@@ -38,7 +38,6 @@ class Loading extends Component {
             console.log(location)
             axios.get(`${HERE_MAPS_API}?apiKey=${HERE_MAPS_KEY_API}&mode=retrieveAddresses&prox=${location.coords.latitude},${location.coords.longitude}, 1`)
             .then(response => {
-                    console.log(response.data);
                 }).catch((error) => {
                     console.log('error 3 ' + error);
                 });
@@ -66,7 +65,8 @@ class Loading extends Component {
                 this.props.updateToken(token);
             }
         } else {
-            alert('Must use physical device for Push Notifications');
+            this.props.updateToken(null);
+            //alert('Must use physical device for Push Notifications');
         }
     };
     render() {

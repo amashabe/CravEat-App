@@ -1,6 +1,9 @@
 import firebase from 'firebase';
 import { Keyboard } from 'react-native';
 import db from '../config/firebase';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN } from '../types';
 
 export const updateEmail = (email) => {
@@ -28,6 +31,49 @@ export const updateUsername = (username) => {
 export const updateBio = (bio) => {
 	return {
 		type: UPDATE_BIO, payload: bio,
+	}
+}
+
+export const updatePP = () => async (dispatch, getState) => {
+	const { uid } = getState().user
+	if (Constants.platform.ios) {
+		const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+		if (status !== 'granted') {
+			alert('Sorry, we need camera roll permissions to make this work!');
+		}
+	}
+
+	let result = await ImagePicker.launchImageLibraryAsync({
+		mediaTypes: ImagePicker.MediaTypeOptions.Images,
+		allowsEditing: true,
+		aspect: [4, 3],
+	});
+	if (!result.cancelled) {
+		const respond = await fetch(result.uri);
+		const file = await respond.blob();
+		const storageRef = firebase.storage().ref();
+		const metadata = { contentType: 'image/jpeg' };
+		let uploadTask = storageRef.child('ProfilePicture/' + uid).put(file, metadata);
+		uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+			(snapshot) => {
+				let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				console.log('Upload is ' + progress + '% done');
+				if (progress === 0) {
+
+				}
+				if (progress === 100) {
+
+				}
+
+			}, (error) => {
+				console.log(error)
+			}, () => {
+				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+					db.collection('users').doc(uid).update({ photo: downloadURL })
+					dispatch(getUser(uid))
+				}
+				);
+			});
 	}
 }
 

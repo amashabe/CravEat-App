@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer } from 'react-navigation';
-import { HomeNavigator, ActivityNavigator, ListingNavigator, ProfileNavigator, SearchNavigator } from './StackNavigator';
+import { HomeNavigator, ActivityNavigator, ProfileNavigator, SearchNavigator } from './StackNavigator';
 import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default createAppContainer(createBottomTabNavigator(
@@ -17,15 +17,6 @@ export default createAppContainer(createBottomTabNavigator(
         },
         Search: {
             screen: SearchNavigator,
-            navigationOptions: {
-                tabBarLabel: ' ',
-                tabBarIcon: ({ focused }) => (
-                    <AntDesign name='search1' size={28} style={{ marginTop: 15, color: focused ? 'orange' : 'black' }} />
-                )
-            }
-        },
-        Listing: {
-            screen: ListingNavigator,
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: ({ focused }) => (

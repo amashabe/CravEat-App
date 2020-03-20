@@ -6,7 +6,6 @@ import Activity from '../screens/Activity'
 import Profile from '../screens/Profile'
 import Comment from '../screens/Comment';
 import UpdateDetails from '../screens/UpdateDetails';
-import Listing from "../screens/Listing";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -53,17 +52,6 @@ export const SearchNavigator = createAppContainer(createStackNavigator(
   {
     Search: {
       screen: Search,
-      navigationOptions: {
-        headerShown: false
-      }
-    }
-  }
-));
-
-export const ListingNavigator = createAppContainer(createStackNavigator(
-  {
-    Listing: {
-      screen: Listing,
       navigationOptions: {
         headerShown: false
       }
