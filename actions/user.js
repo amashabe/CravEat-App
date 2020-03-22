@@ -4,7 +4,8 @@ import db from '../config/firebase';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS } from '../types';
+import { getPosts } from './post';
+import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS, UPDATE_PROFILE_PICTURE } from '../types';
 
 export const updateEmail = (email) => {
 	return {
@@ -71,11 +72,44 @@ export const updatePP = () => async (dispatch, getState) => {
 			}, () => {
 				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
 					db.collection('users').doc(uid).update({ photo: downloadURL })
+					dispatch(updateData(downloadURL, uid))
 					dispatch(getUser(uid))
 					dispatch({ type: LOADING, payload: false })
 				}
 				);
 			});
+	}
+}
+
+export const updateData = (downloadURL, uid) => async (dispatch) => {
+	try {
+		const batch = db.batch();
+		// db.collection('posts').where('uid', '==', uid).get(data => {
+		// 	data.forEach(doc => {
+		// 		const post = db.doc(`/posts/${doc.id}`);
+		// 		batch.update(post, { photo: downloadURL });
+		// 	})
+		// 	batch.commit()
+		// 	dispatch({ type: UPDATE_PROFILE_PICTURE, payload: downloadURL })
+		// 	dispatch(getPosts())
+		// })
+
+		const posts = await db.collection('posts').get()
+
+		let array = []
+		posts.forEach((post) => {
+			array.push(post.data())
+		})
+
+		array.map(doc => {
+			const post = db.doc(`/posts/${doc.id}`);
+			batch.update(post, { photo: downloadURL });
+		})
+		batch.commit();
+		dispatch({ type: UPDATE_PROFILE_PICTURE, payload: downloadURL })
+		dispatch(getPosts())
+	} catch (error) {
+		alert(error)
 	}
 }
 

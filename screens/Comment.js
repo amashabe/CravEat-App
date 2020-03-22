@@ -9,6 +9,13 @@ class Comment extends React.Component {
     comment: ''
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.post.feed != prevProps.post.feed) {
+      const { params } = this.props.navigation.state
+      this.props.getComments(params)
+    }
+  }
+
   componentDidMount = () => {
     const { params } = this.props.navigation.state
     this.props.getComments(params)
