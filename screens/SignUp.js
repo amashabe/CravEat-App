@@ -10,7 +10,6 @@ class SignUp extends React.Component {
 	render() {
 		return (
 			<KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={-60}>
-				  <StatusBar hidden={true} />
 				<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 					<Image source={require('../assets/icon.png')} style={{ justifyContent: 'center', width: 100, height: 100, alignItems: 'center', marginBottom: 20 }} />
 				</View>

@@ -49,6 +49,7 @@ export const updatePP = () => async (dispatch, getState) => {
 		aspect: [4, 3],
 	});
 	if (!result.cancelled) {
+		dispatch({ type: LOADING, payload: true })
 		const respond = await fetch(result.uri);
 		const file = await respond.blob();
 		const storageRef = firebase.storage().ref();
@@ -71,6 +72,7 @@ export const updatePP = () => async (dispatch, getState) => {
 				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
 					db.collection('users').doc(uid).update({ photo: downloadURL })
 					dispatch(getUser(uid))
+					dispatch({ type: LOADING, payload: false })
 				}
 				);
 			});

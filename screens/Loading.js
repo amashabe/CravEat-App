@@ -16,7 +16,7 @@ const { height, width } = Dimensions.get('window');
 class Loading extends Component {
     componentDidMount = () => {
         this.registerForPushNotificationsAsync();
-        this.getLocations()
+        // this.getLocations()
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.props.getUser(user.uid)
@@ -38,6 +38,7 @@ class Loading extends Component {
             console.log(location)
             axios.get(`${HERE_MAPS_API}?apiKey=${HERE_MAPS_KEY_API}&mode=retrieveAddresses&prox=${location.coords.latitude},${location.coords.longitude}, 1`)
                 .then(response => {
+                    console.log(response)
                 }).catch((error) => {
                     console.log('error 3 ' + error);
                 });
@@ -69,7 +70,6 @@ class Loading extends Component {
     render() {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <StatusBar hidden={true} />
                 <ActivityIndicator size={65} color="#ff741a" />
             </View>
         );

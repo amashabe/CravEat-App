@@ -24,7 +24,6 @@ class Comment extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView enabled behavior='padding' keyboardVerticalOffset={75} style={{ flex: 1, backgroundColor: '#fff' }}>
-        <StatusBar hidden={true} />
         <FlatList
           keyExtractor={(item) => JSON.stringify(item.createdAt)}
           data={this.props.post.comments}

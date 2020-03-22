@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import { connect } from 'react-redux';
 import { getAllUsers } from '../actions/user';
@@ -35,8 +35,8 @@ class Search extends Component {
         <ScrollView>
           {filterUSers.map(user => {
             return (
-              <TouchableOpacity onPress={() => alert(user.uid)} key={user.id} style={styles.emailItem}>
-                <View>
+              <TouchableOpacity key={`${user.uid}`} onPress={() => alert(user.uid)} key={user.id} style={styles.emailItem}>
+                <View >
                   <Text>{user.username}</Text>
                   <Text style={styles.emailSubject}>{user.bio}</Text>
                 </View>

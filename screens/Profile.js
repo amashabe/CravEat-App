@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, StatusBar } from 'react-native';
+import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, StatusBar, ActivityIndicator } from 'react-native';
 import { signOut, updatePP } from '../actions/user';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -48,7 +48,6 @@ class Profile extends React.Component {
     const { tab } = this.state;
     return (
       <SafeAreaView style={{ flex: 1, position: 'relative' }}>
-        <StatusBar hidden={true} />
         <Image source={require('../assets/profile-header.jpg')} style={{ position: 'absolute', width: width, height: height * 0.25, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
         <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.5)']} style={{ height: height * 0.25 }}>
           <Text style={{ top: height * 0.19, left: width * 0.30, fontSize: 17, fontWeight: 'bold', color: '#fff' }}>_{this.props.user.username}</Text>
@@ -74,8 +73,10 @@ class Profile extends React.Component {
         </LinearGradient>
         <TouchableOpacity
           onPress={() => this.props.updatePP()}
-          style={{ width: 94, height: 94, borderRadius: 94 / 2, position: 'absolute', left: width * 0.021, right: 0, borderColor: '#fff', borderWidth: 2, top: height * 0.175 }}>
-          <Image source={{ uri: this.props.user.photo }} style={{ width: 90, height: 90, borderRadius: 90 / 2, }} />
+          style={{ backgroundColor: '#fff', width: 94, height: 94, borderRadius: 94 / 2, position: 'absolute', left: width * 0.021, right: 0, borderColor: '#fff', borderWidth: 2, top: height * 0.175 }}>
+          {
+            this.props.UI.loading ? <ActivityIndicator size={32} color="#ff741a" style={{ marginVertical: '30%' }} /> : <Image source={{ uri: this.props.user.photo }} style={{ width: 90, height: 90, borderRadius: 90 / 2, }} />
+          }
         </TouchableOpacity>
         {tab === "USER" && <UserDetails />}
         {tab === "POSTS" && <UserPosts />}
@@ -89,7 +90,8 @@ class Profile extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    post: state.post
+    post: state.post,
+    UI: state.UI
   }
 }
 

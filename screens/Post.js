@@ -52,7 +52,6 @@ class Post extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={{justifyContent: 'center', alignItems: 'center', flex: 1, marginBottom: 100}} behavior="padding" enabled keyboardVerticalOffset={100}>
-                  <StatusBar hidden={true} />
                 <Modal animationType='slide' transparent={false} visible={this.state.showModal}>
                     <SafeAreaView style={[styles.container, styles.center]}>
                         <FlatList

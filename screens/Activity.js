@@ -71,7 +71,6 @@ class Activity extends React.Component {
         if (this.state.notification.length <= 0) return <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
         return (
             <View style={{ flex: 1, backgroundColor: '#fff' }}>
-                  <StatusBar hidden={true} />
                 <FlatList
                     onRefresh={() => this.getNotifications()}
                     refreshing={false}

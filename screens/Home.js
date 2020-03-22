@@ -29,7 +29,6 @@ class Home extends React.Component {
     if (this.props.post === null) return null
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar hidden={true} />
         <FlatList
           onRefresh={() => this.getNewPosts()}
           refreshing={false}
