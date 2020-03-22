@@ -101,9 +101,9 @@ export const login = () => async (dispatch, getState) => {
 
 export const getUser = (uid) => async (dispatch, getState) => {
 	const { token } = getState().user
+	console.log('User :', token) 	
 	try {
 		const updateToken = await db.collection('users').doc(uid).update({ token: token })
-		console.log(updateToken)
 		const user = await db.collection('users').doc(uid).get()
 		dispatch({ type: SIGN_IN, payload: user.data() })
 	} catch (e) {

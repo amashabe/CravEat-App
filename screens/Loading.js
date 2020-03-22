@@ -66,7 +66,6 @@ class Loading extends Component {
             }
         } else {
             this.props.updateToken(null);
-            //alert('Must use physical device for Push Notifications');
         }
     };
     render() {
