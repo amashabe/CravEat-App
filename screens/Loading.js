@@ -16,7 +16,7 @@ const { height, width } = Dimensions.get('window');
 class Loading extends Component {
     componentDidMount = () => {
         this.registerForPushNotificationsAsync();
-         this.getLocations()
+        this.getLocations()
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.props.getUser(user.uid)
@@ -29,7 +29,7 @@ class Loading extends Component {
             }
         })
     }
-    
+
 
     getLocations = async () => {
         const permission = await Permissions.askAsync(Permissions.LOCATION)
@@ -37,7 +37,7 @@ class Loading extends Component {
             const location = await Location.getCurrentPositionAsync()
             console.log(location)
             axios.get(`${HERE_MAPS_API}?apiKey=${HERE_MAPS_KEY_API}&mode=retrieveAddresses&prox=${location.coords.latitude},${location.coords.longitude}, 1`)
-            .then(response => {
+                .then(response => {
                 }).catch((error) => {
                     console.log('error 3 ' + error);
                 });
@@ -64,8 +64,6 @@ class Loading extends Component {
             if (token != null) {
                 this.props.updateToken(token);
             }
-        } else {
-            this.props.updateToken(null);
         }
     };
     render() {

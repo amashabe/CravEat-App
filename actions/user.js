@@ -4,7 +4,7 @@ import db from '../config/firebase';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN } from '../types';
+import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS } from '../types';
 
 export const updateEmail = (email) => {
 	return {
@@ -101,9 +101,10 @@ export const login = () => async (dispatch, getState) => {
 
 export const getUser = (uid) => async (dispatch, getState) => {
 	const { token } = getState().user
-	console.log('User :', token) 	
 	try {
-		const updateToken = await db.collection('users').doc(uid).update({ token: token })
+		if (token) {
+			const updateToken = await db.collection('users').doc(uid).update({ token: token })
+		}
 		const user = await db.collection('users').doc(uid).get()
 		dispatch({ type: SIGN_IN, payload: user.data() })
 	} catch (e) {
@@ -133,6 +134,19 @@ export const updateUser = () => async (dispatch, getState) => {
 	}
 }
 
+export const getAllUsers = () => async (dispatch, getState) => {
+	try {
+		const users = await db.collection('users').get();
+		let array = [];
+		users.forEach((user) => {
+			array.push(user.data())
+		})
+		dispatch({ type: GET_ALL_USERS, payload: array })
+	} catch (error) {
+		alert(error)
+	}
+}
+
 export const signup = () => (dispatch, getState) => {
 	Keyboard.dismiss();
 	dispatch({ type: LOADING, payload: true })
@@ -150,7 +164,7 @@ export const signup = () => (dispatch, getState) => {
 				username: username,
 				bio: bio,
 				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/pp.jpg?alt=media&token=8a48ae8e-730e-4213-9ce7-e8e295898921',
-				token: token,
+				token: token ? token : null,
 				followed: [],
 				following: [],
 				createdAt: new Date().getTime(),
