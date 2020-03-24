@@ -30,7 +30,7 @@ class Search extends Component {
         <SafeAreaView style={[style.topSafeArea]} />
         <SafeAreaView style={[style.bottomSafeArea]}>
           <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
-          <View style={styles.container}>
+          <View style={styles.container} >
             <SearchInput
               onChangeText={(term) => { this.searchUpdated(term) }}
               style={styles.searchInput}

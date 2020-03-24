@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux'
-import { updateUser, updateEmail, updateBio, updateUsername } from '../actions/user'
+import { updateUser, updateEmail, updateBio, updateUsername, updateUserDetails } from '../actions/user'
 import styles from '../styles'
 
 class UpdateDetails extends Component {
+
+    _updateDetails = (navigation) => {
+        this.props.updateUserDetails(navigation)
+    }
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={70}>
                 <TextInput
+                    editable={false}
                     style={styles.border}
                     value={this.props.user.email}
                     onChangeText={input => this.props.updateEmail(input)}
@@ -17,7 +22,7 @@ class UpdateDetails extends Component {
                 <TextInput
                     editable={false}
                     style={styles.border}
-                    value={this.props.user.password}
+                    value={'********'}
                     onChangeText={input => this.props.updatePassword(input)}
                     placeholder='Password'
                     secureTextEntry={true}
@@ -33,8 +38,14 @@ class UpdateDetails extends Component {
                     value={this.props.user.bio}
                     onChangeText={input => this.props.updateBio(input)}
                     placeholder='Bio'
+                    multiline={true}
+                    numberOfLines={1}
+                    maxLength={150}
                 />
-            </View>
+                <TouchableOpacity style={styles.button} onPress={() => this._updateDetails(this.props.navigation)}>
+                    <Text>Update Details</Text>
+                </TouchableOpacity>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -43,4 +54,4 @@ const mapStateToProps = state => ({
     user: state.user,
 })
 
-export default connect(mapStateToProps, { updateUser, updateEmail, updateBio, updateUsername })(UpdateDetails)
+export default connect(mapStateToProps, { updateUser, updateEmail, updateBio, updateUsername, updateUserDetails })(UpdateDetails)

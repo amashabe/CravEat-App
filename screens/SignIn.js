@@ -15,7 +15,7 @@ class SignIn extends React.Component {
 				<SafeAreaView style={[styles.topSafeArea]} />
 				<SafeAreaView style={[styles.bottomSafeArea]}>
 					<AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
-					<KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={-100}>
+					<KeyboardAvoidingView style={{ ...styles.container, backgroundColor: '#fff' }} behavior="padding" enabled keyboardVerticalOffset={-100}>
 						<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 							<Image source={require('../assets/icon.png')} style={{
 								justifyContent: 'center',

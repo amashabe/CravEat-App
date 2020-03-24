@@ -28,7 +28,7 @@ export const getPost = (postId, navigate) => async (dispatch) => {
 	const post = await db.collection('posts').doc(postId).get()
 
 	dispatch({ type: GET_POST, payload: post.data() })
-	dispatch(navigate.navigate('Comment', post.data()))
+	navigate.navigate('Comment', post.data())
 }
 
 export const uploadPost = () => async (dispatch, getState) => {

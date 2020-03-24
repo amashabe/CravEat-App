@@ -24,7 +24,7 @@ class Profile extends React.Component {
   }
 
   _navigateTab = (text) => {
-    this.setState({tab: text})
+    this.setState({ tab: text })
   }
   componentDidMount() {
     const { counter } = this.state;
@@ -34,6 +34,11 @@ class Profile extends React.Component {
         this.setState({ counter: counter + 1 })
       }
     })
+  }
+
+  _update = () => {
+    this.setState({ visible: false })
+    this.props.navigation.navigate('UpdateDetails')
   }
   _openMenu = () => this.setState({ visible: true });
   _closeMenu = () => this.setState({ visible: false });
@@ -52,7 +57,7 @@ class Profile extends React.Component {
             </LinearGradient>
             <TouchableOpacity onPress={() => this._openMenu()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
               <Menu style={{ margin: 7, position: 'absolute', top: height * 0.01, marginTop: 20, paddingRight: 20 }} visible={this.state.visible} onDismiss={this._closeMenu} anchor={<MaterialCommunityIcons style={{ color: '#fff' }} name='dots-vertical' size={30} />}>
-                <Menu.Item onPress={() => this.props.navigation.navigate('UpdateDetails')} title="Edit" />
+                <Menu.Item onPress={() => this._update()} title="Edit" />
                 <Menu.Item onPress={() => this.props.signOut()} title="Sign Out." />
               </Menu>
             </TouchableOpacity>
