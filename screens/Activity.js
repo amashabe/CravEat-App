@@ -1,21 +1,17 @@
 import React from 'react';
-import styles from '../styles'
 import { connect } from 'react-redux'
-import { Text, View, FlatList, ActivityIndicator, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { getPost } from '../actions/post';
 import db from '../config/firebase';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
+import styles from '../styles'
+import AppStatusBar from '../components/AppStatusBar';
 
 class Activity extends React.Component {
     state = {
         notification: []
     }
-
-    // componentDidUpdate() {
-    //     this.getNotifications()
-    // }
-
     componentDidMount = () => {
         this.getNotifications()
     }
@@ -68,16 +64,23 @@ class Activity extends React.Component {
     }
 
     render() {
-        if (this.state.notification.length <= 0) return <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+        if (this.state.notification.length <= 0 || this.state.notification === undefined) return <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+
         return (
-            <View style={{ flex: 1, backgroundColor: '#fff' }}>
-                <FlatList
-                    onRefresh={() => this.getNotifications()}
-                    refreshing={false}
-                    data={this.state.notification}
-                    keyExtractor={(item) => JSON.stringify(item.createdAt)}
-                    renderItem={({ item }) => this.renderList(item)} />
-            </View>
+            <>
+             <SafeAreaView style={[styles.topSafeArea]} />
+                <SafeAreaView style={[styles.bottomSafeArea]}>
+                    <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
+                    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+                        <FlatList
+                            onRefresh={() => this.getNotifications()}
+                            refreshing={false}
+                            data={this.state.notification}
+                            keyExtractor={(item) => JSON.stringify(item.createdAt)}
+                            renderItem={({ item }) => this.renderList(item)} />
+                    </View>
+                </SafeAreaView>
+            </>
         )
     }
 }

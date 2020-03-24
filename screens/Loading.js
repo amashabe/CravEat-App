@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, Dimensions, StatusBar } from 'react-native';
+import { View, ActivityIndicator, Dimensions, SafeAreaView, StyleSheet } from 'react-native';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { getUser, updateToken } from '../actions/user';
@@ -7,7 +7,9 @@ import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
+import AppStatusBar from '../components/AppStatusBar';
 import axios from 'axios';
+import styles from '../styles';
 const HERE_MAPS_API = 'https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json';
 const HERE_MAPS_KEY_API = 'EGd7qrUMgE5euGI08Uzs6CbA8CG-MEaiNvHE97uThlg';
 
@@ -69,9 +71,16 @@ class Loading extends Component {
     };
     render() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator size={65} color="#ff741a" />
-            </View>
+            <>
+                <SafeAreaView style={[styles.topSafeArea]} />
+                <SafeAreaView style={[styles.bottomSafeArea]}>
+                    <AppStatusBar backgroundColor={'#ff741a'} barStyle="light-content" />
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+                        <AppStatusBar backgroundColor={'#ff741a'} barStyle="light-content" />
+                        <ActivityIndicator size={65} color="#ff741a" />
+                    </View>
+                </SafeAreaView>
+            </>
         );
     }
 }

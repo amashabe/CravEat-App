@@ -6,7 +6,6 @@ export default styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F4F6F6'
   },
   center: {
     alignItems: 'center',
@@ -63,5 +62,12 @@ export default styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: '#ff741a',
 
-  }
+  }, topSafeArea: {
+    flex: 0,
+    backgroundColor: '#ff741a'
+  },
+  bottomSafeArea: {
+    flex: 1,
+    backgroundColor: '#ff741a'
+  },
 });
