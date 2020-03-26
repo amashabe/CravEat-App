@@ -18,3 +18,4 @@ export const GET_TOKEN = 'GET_TOKEN';
 export const SET_TOKEN = 'SET_TOKEN';
 export const UPDATE_PROFILE_PICTURE = 'UPDATE_PROFILE_PICTURE';
 export const GET_ALL_USERS = 'GET_ALL_USERS';
+export const GET_PROFILE = 'GET_PROFILE'; 

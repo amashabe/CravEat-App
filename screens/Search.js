@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import { connect } from 'react-redux';
-import { getAllUsers } from '../actions/user';
+import { getAllUsers, getUser } from '../actions/user';
 import AppStatusBar from '../components/AppStatusBar';
 import style from '../styles';
 
@@ -22,6 +22,13 @@ class Search extends Component {
   searchUpdated(term) {
     this.setState({ searchTerm: term })
   }
+
+  goToUser = (user) => {
+    console.log(user)
+    this.props.getUser(user.uid, 'GET_PROFILE')
+    this.props.navigation.navigate('Profile')
+  }
+
   render() {
     if (this.props.user.users === undefined) return null;
     const filterUSers = this.props.user.users.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
@@ -39,7 +46,7 @@ class Search extends Component {
             <ScrollView>
               {filterUSers.map(user => {
                 return (
-                  <TouchableOpacity key={user.uid} onPress={() => alert(user.uid)} key={user.id} style={styles.emailItem}>
+                  <TouchableOpacity key={user.uid} onPress={() => this.goToUser(user)} style={styles.emailItem}>
                     <View >
                       <Text>{user.username}</Text>
                       <Text style={styles.emailSubject}>{user.bio}</Text>
@@ -59,7 +66,7 @@ const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps, { getAllUsers })(Search)
+export default connect(mapStateToProps, { getAllUsers, getUser })(Search)
 
 const styles = StyleSheet.create({
   container: {

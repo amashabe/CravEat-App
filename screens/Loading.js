@@ -10,6 +10,7 @@ import * as Location from 'expo-location';
 import AppStatusBar from '../components/AppStatusBar';
 import axios from 'axios';
 import styles from '../styles';
+import { SIGN_IN } from '../types';
 const HERE_MAPS_API = 'https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json';
 const HERE_MAPS_KEY_API = 'EGd7qrUMgE5euGI08Uzs6CbA8CG-MEaiNvHE97uThlg';
 
@@ -21,7 +22,7 @@ class Loading extends Component {
         // this.getLocations()
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                this.props.getUser(user.uid)
+                this.props.getUser(user.uid, SIGN_IN)
                 if (this.props.user != null) {
                     this.props.navigation.navigate('Home')
                 }

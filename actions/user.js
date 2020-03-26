@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { getPosts } from './post';
-import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS, UPDATE_PROFILE_PICTURE } from '../types';
+import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS, UPDATE_PROFILE_PICTURE, GET_PROFILE } from '../types';
 
 export const updateEmail = (email) => {
 	return {
@@ -127,14 +127,17 @@ export const login = () => async (dispatch, getState) => {
 	}
 }
 
-export const getUser = (uid) => async (dispatch, getState) => {
+export const getUser = (uid, type) => async (dispatch, getState) => {
 	const { token } = getState().user
 	try {
-		if (token) {
-			const updateToken = await db.collection('users').doc(uid).update({ token: token })
-		}
 		const user = await db.collection('users').doc(uid).get()
-		dispatch({ type: SIGN_IN, payload: user.data() })
+		if (type === SIGN_IN) {
+			token ? await db.collection('users').doc(uid).update({ token: token }) : null
+			dispatch({ type: SIGN_IN, payload: user.data() })
+		}
+		else {
+			dispatch({ type: GET_PROFILE, payload: user.data() })
+		}
 	} catch (e) {
 		alert(e)
 	}

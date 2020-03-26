@@ -55,6 +55,12 @@ export const SearchNavigator = createAppContainer(createStackNavigator(
       navigationOptions: {
         headerShown: false
       }
+    },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        headerShown: false
+      }
     }
   }
 ));
@@ -87,7 +93,7 @@ ActivityNavigator.navigationOptions = ({ navigation }) => {
 
 export const ProfileNavigator = createAppContainer(createStackNavigator(
   {
-    Profile: {
+    MyProfile: {
       screen: Profile,
       navigationOptions: {
         headerShown: false

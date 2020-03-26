@@ -33,7 +33,7 @@ export default createAppContainer(createBottomTabNavigator(
                 )
             }
         },
-        Profile: {
+        MyProfile: {
             screen: ProfileNavigator,
             navigationOptions: {
                 tabBarLabel: ' ',
