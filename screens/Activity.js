@@ -6,6 +6,7 @@ import db from '../config/firebase';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import styles from '../styles'
+
 import AppStatusBar from '../components/AppStatusBar';
 
 class Activity extends React.Component {
@@ -64,11 +65,21 @@ class Activity extends React.Component {
     }
 
     render() {
-        if (this.state.notification.length <= 0 || this.state.notification === undefined) return <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+        if (this.state.notification.length <= 0 || this.state.notification === undefined) {
+            return (
+                <>
+                    <SafeAreaView style={[styles.topSafeArea]} />
+                    <SafeAreaView style={[styles.bottomSafeArea]}>
+                        <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
+                        <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+                    </SafeAreaView>
+                </>
+            )
+        }
 
         return (
             <>
-             <SafeAreaView style={[styles.topSafeArea]} />
+                <SafeAreaView style={[styles.topSafeArea]} />
                 <SafeAreaView style={[styles.bottomSafeArea]}>
                     <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
                     <View style={{ flex: 1, backgroundColor: '#fff' }}>

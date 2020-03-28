@@ -73,7 +73,6 @@ export const updatePP = () => async (dispatch, getState) => {
 				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
 					db.collection('users').doc(uid).update({ photo: downloadURL })
 					dispatch(updateData(downloadURL, uid))
-					dispatch(getUser(uid))
 					dispatch({ type: LOADING, payload: false })
 				}
 				);
@@ -100,6 +99,7 @@ export const updateData = (downloadURL, uid) => async (dispatch) => {
 		batch.commit();
 		dispatch({ type: UPDATE_PROFILE_PICTURE, payload: downloadURL })
 		dispatch(getPosts())
+		dispatch(getUser(uid))
 	} catch (error) {
 		alert(error)
 	}
@@ -215,9 +215,28 @@ export const signup = () => (dispatch, getState) => {
 
 
 export const updateUserDetails = (navigate) => async (dispatch, getState) => {
+	dispatch({ type: LOADING, payload: true })
 	const { username, bio, uid } = getState().user;
 
-	db.collection('users').doc(uid).update({ username: username, bio: bio })
-	dispatch(getUser(uid))
-	navigate.navigate('Profile')
+	db.collection('users').doc(uid).update({ username: username, bio: bio });
+	const batch = db.batch();
+	const posts = await db.collection('posts').get();
+
+	let array = []
+	posts.forEach((post) => {
+		if (post.data().uid === uid) {
+			array.push(post.data())
+		}
+	});
+
+	array.map(doc => {
+		const post = db.doc(`/posts/${doc.id}`);
+		console.log(post)
+		batch.update(post, { username: username });
+	});
+	batch.commit();
+	dispatch(getUser(uid));
+	dispatch(getPosts());
+	dispatch({ type: LOADING, payload: false })
+	navigate.navigate('MyProfile')
 }

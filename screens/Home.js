@@ -1,6 +1,6 @@
 import React from 'react';
 import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
-import { Text, View, Image, FlatList, TouchableOpacity, SafeAreaView, } from 'react-native';
+import { Text, View, Image, FlatList, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
@@ -32,7 +32,17 @@ class Home extends React.Component {
   }
 
   render() {
-    if (this.props.post === null) return null
+    if (this.props.post === null) {
+      return (
+        <>
+          <SafeAreaView style={[styles.topSafeArea]} />
+          <SafeAreaView style={[styles.bottomSafeArea]}>
+            <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
+            <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+          </SafeAreaView>
+        </>
+      )
+    }
     return (
       <>
         <SafeAreaView style={[styles.topSafeArea]} />
@@ -48,7 +58,7 @@ class Home extends React.Component {
                 const liked = item.likes.includes(this.props.user.uid)
                 return (
                   <View key={item.id} style={{ marginBottom: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 1, borderColor: "#DCDCDC", borderWidth: 0.5 }}>
-                    <View style={[styles.row, styles.center]}>
+                    <View style={[styles.row, styles.center]}> 
                       <TouchableOpacity style={[styles.row, styles.center]} onPress={() => this._goToProfile(item.uid)}>
                         <Image style={styles.roundImage} source={{ uri: `${item.photo}` }} />
                         <Text>{item.username}</Text>

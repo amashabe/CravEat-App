@@ -5,11 +5,16 @@ import { updateEmail, updatePassword, login } from '../actions/user'
 import styles from '../styles';
 import Hr from "react-native-hr-component";
 import AppStatusBar from '../components/AppStatusBar';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
 class SignIn extends React.Component {
+	state = {
+		showPassword: false
+	}
 	render() {
+		const { showPassword } = this.state;
 		return (
 			<>
 				<SafeAreaView style={[styles.topSafeArea]} />
@@ -44,25 +49,32 @@ class SignIn extends React.Component {
 							placeholder='Email'
 							placeholderTextColor="#202020"
 						/>
-						<TextInput
-							secureTextEntry
-							autoCorrect={false}
-							autoCapitalize="none"
-							style={{
-								borderColor: 'grey',
-								borderRadius: 4,
-								borderWidth: 1,
-								height: 45,
-								padding: 5,
-								marginBottom: 3,
-								backgroundColor: '#FFF',
-								width: '95%'
-							}}
-							value={this.props.user.password}
-							placeholder='Password'
-							placeholderTextColor="#202020"
-							onChangeText={input => this.props.updatePassword(input)}
-						/>
+						<View style={{ width: '95%' }}>
+							<TextInput
+								secureTextEntry={showPassword}
+								autoCorrect={false}
+								autoCapitalize="none"
+								style={{
+									borderColor: 'grey',
+									borderRadius: 4,
+									borderWidth: 1,
+									height: 45,
+									padding: 5,
+									marginBottom: 3,
+									backgroundColor: '#FFF',
+
+								}}
+								value={this.props.user.password}
+								placeholder='Password'
+								placeholderTextColor="#202020"
+								onChangeText={input => this.props.updatePassword(input)}
+							/>
+							<TouchableOpacity
+								onPress={() => this.setState({ showPassword: !showPassword })}
+								style={{ position: 'absolute', right: '5%', top: '15%' }}>
+								<MaterialCommunityIcons name={showPassword ? "eye-off" : "eye"} size={25} />
+							</TouchableOpacity>
+						</View>
 						{
 							this.props.UI.errors ? <Text style={{
 								fontSize: 12,

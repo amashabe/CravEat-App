@@ -30,7 +30,17 @@ class Search extends Component {
   }
 
   render() {
-    if (this.props.user.users === undefined) return null;
+    if (this.props.user.users === undefined) {
+      return (
+        <>
+          <SafeAreaView style={[styles.topSafeArea]} />
+          <SafeAreaView style={[styles.bottomSafeArea]}>
+            <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
+            <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+          </SafeAreaView>
+        </>
+      )
+    }
     const filterUSers = this.props.user.users.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
     return (
       <>

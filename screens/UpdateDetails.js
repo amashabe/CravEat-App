@@ -43,7 +43,8 @@ class UpdateDetails extends Component {
                     maxLength={150}
                 />
                 <TouchableOpacity style={styles.button} onPress={() => this._updateDetails(this.props.navigation)}>
-                    <Text>Update Details</Text>
+                    {this.props.UI.loading ?
+                        <ActivityIndicator size="small" color="#ffffff" animating /> : <Text>Update Details</Text>}
                 </TouchableOpacity>
             </KeyboardAvoidingView>
         );
@@ -52,6 +53,7 @@ class UpdateDetails extends Component {
 
 const mapStateToProps = state => ({
     user: state.user,
+    UI: state.UI
 })
 
 export default connect(mapStateToProps, { updateUser, updateEmail, updateBio, updateUsername, updateUserDetails })(UpdateDetails)
