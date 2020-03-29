@@ -18,29 +18,3 @@ export const uploadImage = (url) => async (dispatch) => {
             );
         });
 }
-
-  
-  // export const sendNotification = (uid, text) => {
-  //   return async (dispatch, getState) => {
-  //     const { username } = getState().user
-  //     try {
-  //       const user = await db.collection('users').doc(uid).get()
-  //       if(user.data().token){
-  //         fetch(PUSH_ENDPOINT, {
-  //           method: 'POST',
-  //           headers: {
-  //             Accept: 'application/json',
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify({
-  //             to: user.data().token,
-  //             title: username,
-  //             body: text,
-  //           })
-  //         })
-  //       }
-  //     } catch(e) {
-  //       console.error(e)
-  //     }
-  //   }
-  // }

@@ -38,12 +38,12 @@ class Loading extends Component {
         const permission = await Permissions.askAsync(Permissions.LOCATION)
         if (permission.status === 'granted') {
             const location = await Location.getCurrentPositionAsync()
-            console.log(location)
+            
             axios.get(`${HERE_MAPS_API}?apiKey=${HERE_MAPS_KEY_API}&mode=retrieveAddresses&prox=${location.coords.latitude},${location.coords.longitude}, 1`)
                 .then(response => {
-                    console.log(response)
+                    
                 }).catch((error) => {
-                    console.log('error 3 ' + error);
+                   
                 });
         }
     }
@@ -78,7 +78,7 @@ class Loading extends Component {
                     <AppStatusBar backgroundColor={'#ff741a'} barStyle="light-content" />
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
                         <AppStatusBar backgroundColor={'#ff741a'} barStyle="light-content" />
-                        <ActivityIndicator size={65} color="#ff741a" />
+                        <ActivityIndicator color="#ff741a" />
                     </View>
                 </SafeAreaView>
             </>

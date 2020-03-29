@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import { connect } from 'react-redux';
 import { getAllUsers, getUser } from '../actions/user';
@@ -24,7 +24,6 @@ class Search extends Component {
   }
 
   goToUser = (user) => {
-    console.log(user)
     this.props.getUser(user.uid, 'GET_PROFILE')
     this.props.navigation.navigate('Profile')
   }
@@ -33,10 +32,10 @@ class Search extends Component {
     if (this.props.user.users === undefined) {
       return (
         <>
-          <SafeAreaView style={[styles.topSafeArea]} />
-          <SafeAreaView style={[styles.bottomSafeArea]}>
+          <SafeAreaView style={[style.topSafeArea]} />
+          <SafeAreaView style={[style.bottomSafeArea]}>
             <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
-            <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+            <ActivityIndicator color="#ff741a" style={{ flex: 1, backgroundColor: '#fff' }} />
           </SafeAreaView>
         </>
       )

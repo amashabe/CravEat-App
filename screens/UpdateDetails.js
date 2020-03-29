@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux'
 import { updateUser, updateEmail, updateBio, updateUsername, updateUserDetails } from '../actions/user'
 import styles from '../styles'
@@ -44,7 +44,7 @@ class UpdateDetails extends Component {
                 />
                 <TouchableOpacity style={styles.button} onPress={() => this._updateDetails(this.props.navigation)}>
                     {this.props.UI.loading ?
-                        <ActivityIndicator size="small" color="#ffffff" animating /> : <Text>Update Details</Text>}
+                        <ActivityIndicator size="small" color="#ff741a" animating /> : <Text>Update Details</Text>}
                 </TouchableOpacity>
             </KeyboardAvoidingView>
         );

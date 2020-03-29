@@ -71,7 +71,7 @@ class Activity extends React.Component {
                     <SafeAreaView style={[styles.topSafeArea]} />
                     <SafeAreaView style={[styles.bottomSafeArea]}>
                         <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
-                        <ActivityIndicator style={{ flex: 1, backgroundColor: '#fff' }} />
+                        <ActivityIndicator color="#ff741a" style={{ flex: 1, backgroundColor: '#fff' }} />
                     </SafeAreaView>
                 </>
             )

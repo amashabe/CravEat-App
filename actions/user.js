@@ -59,7 +59,6 @@ export const updatePP = () => async (dispatch, getState) => {
 		uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
 			(snapshot) => {
 				let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-				console.log('Upload is ' + progress + '% done');
 				if (progress === 0) {
 
 				}
@@ -68,7 +67,7 @@ export const updatePP = () => async (dispatch, getState) => {
 				}
 
 			}, (error) => {
-				console.log(error)
+				alert(error)
 			}, () => {
 				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
 					db.collection('users').doc(uid).update({ photo: downloadURL })
@@ -231,12 +230,11 @@ export const updateUserDetails = (navigate) => async (dispatch, getState) => {
 
 	array.map(doc => {
 		const post = db.doc(`/posts/${doc.id}`);
-		console.log(post)
 		batch.update(post, { username: username });
 	});
 	batch.commit();
+	navigate.navigate('MyProfile')
 	dispatch(getUser(uid));
 	dispatch(getPosts());
 	dispatch({ type: LOADING, payload: false })
-	navigate.navigate('MyProfile')
 }
