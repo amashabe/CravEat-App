@@ -30,6 +30,7 @@ class Profile extends React.Component {
         this.setState({ counter: counter + 1 })
       }
     })
+
   }
 
   _navigateTab = (text) => {
@@ -61,6 +62,10 @@ class Profile extends React.Component {
     } else {
       user = this.props.user
     }
+
+    if (!this.props.profile) {
+      return <ActivityIndicator />
+    }
     return (
       <>
         <SafeAreaView style={[styles.topSafeArea]} />
@@ -70,16 +75,16 @@ class Profile extends React.Component {
             <Image source={require('../assets/profile-header.jpg')} style={{ position: 'absolute', width: width, height: height * 0.25, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
             <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(0,0,0,0.5)']} style={{ height: height * 0.25 }}>
               <Text style={{ top: height * 0.19, left: width * 0.30, fontSize: 17, fontWeight: 'bold', color: '#fff' }}>_{user.username}</Text>
-              <TouchableOpacity style={{ top: height * 0.15, left: width * 0.6, paddingVertical: 8, alignItems: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 5, width: 135 }} onPress={() => this.follow(user)}>
-                <Text style={styles.bold}>{user.followers.indexOf(this.props.user.uid) >= 0 ? 'UnFollow User' : 'Follow User'}</Text>
-              </TouchableOpacity>
+              {state.routeName === 'Profile' ? <TouchableOpacity style={{ top: height * 0.15, left: width * 0.6, paddingVertical: 8, alignItems: 'center', borderColor: '#d3d3d3', borderWidth: 1, borderRadius: 5, width: 135 }} onPress={() => this.follow(user)}>
+                <Text style={styles.bold}>{user.followers.indexOf(this.props.user.uid) >= 0 ? 'UnFollow' : 'Follow'}</Text>
+              </TouchableOpacity> : null}
             </LinearGradient>
-            <TouchableOpacity onPress={() => this._openMenu()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
+            {state.routeName === 'Profile' ? null : <TouchableOpacity onPress={() => this._openMenu()} style={{ margin: 7, position: 'absolute', top: height * 0.01, right: width * 0.01, }}>
               <Menu style={{ margin: 7, position: 'absolute', top: height * 0.01, marginTop: 20, paddingRight: 20 }} visible={this.state.visible} onDismiss={this._closeMenu} anchor={<MaterialCommunityIcons style={{ color: '#fff' }} name='dots-vertical' size={30} />}>
                 <Menu.Item onPress={() => this._update()} title="Edit" />
                 <Menu.Item onPress={() => firebase.auth().signOut()} title="Sign Out." />
               </Menu>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']} style={{ height: height * 0.08, borderBottomWidth: 0.5, borderColor: '#fff' }}>
               <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'space-evenly', left: width * 0.12, }}>
                 <TouchableOpacity style={{ marginVertical: 9 }} onPress={() => this._navigateTab('USER')}>

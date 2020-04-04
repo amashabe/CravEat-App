@@ -248,14 +248,14 @@ export const followUser = (user) => async (dispatch, getState) => {
 		db.collection('users').doc(uid).update({
 			following: firebase.firestore.FieldValue.arrayUnion(user.uid)
 		})
-		db.collection('activity').doc().set({
+		db.collection('notifications').doc().set({
 			followerId: uid,
 			followerPhoto: photo,
 			followerName: username,
 			uid: user.uid,
 			photo: user.photo,
 			username: user.username,
-			date: new Date().getTime(),
+			createdAt: new Date().getTime(),
 			type: 'FOLLOWER',
 		})
 		dispatch(getUser(user.uid))

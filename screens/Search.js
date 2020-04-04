@@ -23,8 +23,8 @@ class Search extends Component {
     this.setState({ searchTerm: term })
   }
 
-  goToUser = (user) => {
-    this.props.getUser(user.uid, 'GET_PROFILE')
+  goToUser = async (user) => {
+    const response = await this.props.getUser(user.uid, 'GET_PROFILE')
     this.props.navigation.navigate('Profile')
   }
 
@@ -55,12 +55,18 @@ class Search extends Component {
             <ScrollView>
               {filterUSers.map(user => {
                 return (
-                  <TouchableOpacity key={user.uid} onPress={() => this.goToUser(user)} style={styles.emailItem}>
-                    <View >
-                      <Text>{user.username}</Text>
-                      <Text style={styles.emailSubject}>{user.bio}</Text>
-                    </View>
-                  </TouchableOpacity>
+                  <View key={user.uid}>
+                    {
+                      user.uid === this.props.user.uid ? null :
+                        <TouchableOpacity onPress={() => this.goToUser(user)} style={styles.emailItem}>
+                          <View >
+                            <Text>{user.username}</Text>
+                            <Text style={styles.emailSubject}>{user.bio}</Text>
+                          </View>
+                        </TouchableOpacity>
+                    }
+                  </View>
+
                 )
               })}
             </ScrollView>

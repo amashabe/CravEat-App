@@ -33,10 +33,10 @@ class UserDetails extends Component {
                         <Text style={{ paddingLeft: width * 0.2, }}>{this.Capitalize(moment(user.createdAt).fromNow())}</Text>
                     </View>
                 </View>
-                {/* <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>
+                <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ paddingLeft: width * 0.06, fontWeight: 'bold' }}>Followed</Text>
-                        <Text style={{ paddingLeft: width * 0.15, }}>{user.followed.length}</Text>
+                        <Text style={{ paddingLeft: width * 0.15, }}>{user.followers.length}</Text>
                     </View>
                 </View>
                 <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>
@@ -44,7 +44,7 @@ class UserDetails extends Component {
                         <Text style={{ paddingLeft: width * 0.06, fontWeight: 'bold' }}>Following</Text>
                         <Text style={{ paddingLeft: width * 0.14, }}>{user.following.length}</Text>
                     </View>
-                </View> */}
+                </View>
                 <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ paddingLeft: width * 0.06, fontWeight: 'bold' }}>Location</Text>

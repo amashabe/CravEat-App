@@ -86,7 +86,6 @@ export const getUserPosts = () => async (dispatch, getState) => {
 			if (user.uid === post.data().uid) {
 				array.push(post.data())
 			}
-
 		})
 		dispatch({ type: GET_USER_POSTS, payload: orderBy(array, 'createdAt', 'desc') })
 	} catch (e) {
