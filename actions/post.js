@@ -45,7 +45,8 @@ export const uploadPost = () => async (dispatch, getState) => {
 			postLocation: post.location,
 			createdAt: new Date().getTime(),
 			likes: [],
-			comments: []
+			comments: [],
+			email: user.email
 		}
 		const ref = await db.collection('posts').doc()
 		upload.id = ref.id

@@ -10,7 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 class SignUp extends React.Component {
 	state = {
-		showPassword: false
+		showPassword: true
 	}
 	render() {
 		const { showPassword } = this.state;

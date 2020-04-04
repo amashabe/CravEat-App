@@ -11,7 +11,7 @@ const { width } = Dimensions.get('window');
 
 class SignIn extends React.Component {
 	state = {
-		showPassword: false
+		showPassword: true
 	}
 	render() {
 		const { showPassword } = this.state;

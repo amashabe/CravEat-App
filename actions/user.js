@@ -195,7 +195,7 @@ export const signup = () => (dispatch, getState) => {
 				bio: bio,
 				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/pp.jpg?alt=media&token=8a48ae8e-730e-4213-9ce7-e8e295898921',
 				token: token ? token : null,
-				followed: [],
+				followers: [],
 				following: [],
 				createdAt: new Date().getTime(),
 			}
@@ -237,4 +237,44 @@ export const updateUserDetails = (navigate) => async (dispatch, getState) => {
 	dispatch(getUser(uid));
 	dispatch(getPosts());
 	dispatch({ type: LOADING, payload: false })
+}
+
+export const followUser = (user) => async (dispatch, getState) => {
+	const { uid, photo, username } = getState().user
+	try {
+		db.collection('users').doc(user.uid).update({
+			followers: firebase.firestore.FieldValue.arrayUnion(uid)
+		})
+		db.collection('users').doc(uid).update({
+			following: firebase.firestore.FieldValue.arrayUnion(user.uid)
+		})
+		db.collection('activity').doc().set({
+			followerId: uid,
+			followerPhoto: photo,
+			followerName: username,
+			uid: user.uid,
+			photo: user.photo,
+			username: user.username,
+			date: new Date().getTime(),
+			type: 'FOLLOWER',
+		})
+		dispatch(getUser(user.uid))
+	} catch (e) {
+		console.error(e)
+	}
+}
+
+export const unfollowUser = (user) => async (dispatch, getState) => {
+	const { uid, photo, username } = getState().user
+	try {
+		db.collection('users').doc(user.uid).update({
+			followers: firebase.firestore.FieldValue.arrayRemove(uid)
+		})
+		db.collection('users').doc(uid).update({
+			following: firebase.firestore.FieldValue.arrayRemove(user.uid)
+		})
+		dispatch(getUser(user.uid))
+	} catch (e) {
+		console.error(e)
+	}
 }

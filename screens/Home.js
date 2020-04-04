@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+import { Ionicons, SimpleLineIcons, MaterialIcons } from '@expo/vector-icons';
 import { Text, View, Image, FlatList, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -24,11 +24,17 @@ class Home extends React.Component {
   }
 
   _goToProfile = (uid) => {
-    this.props.getUser(uid)
+    if (uid === this.props.user.uid) {
+      this.props.navigation.navigate('MyProfile')
+    }
   }
 
   getNewPosts = () => {
     this.props.getPosts();
+  }
+
+  _pinPost = (post) => {
+    console.log(post)
   }
 
   render() {
@@ -58,17 +64,18 @@ class Home extends React.Component {
                 const liked = item.likes.includes(this.props.user.uid)
                 return (
                   <View key={item.id} style={{ marginBottom: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.8, shadowRadius: 2, elevation: 1, borderColor: "#DCDCDC", borderWidth: 0.5 }}>
-                    <View style={[styles.row, styles.center]}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', justifyContent: 'space-between', padding: 5 }}>
                       <TouchableOpacity style={[styles.row, styles.center]} onPress={() => this._goToProfile(item.uid)}>
                         <Image style={styles.roundImage} source={{ uri: `${item.photo}` }} />
-                        <Text>{item.username}</Text>
+                        <View style={{ left: 4 }}>
+                          <Text>{item.username}</Text>
+                          <Text style={{ fontSize: 10, fontWeight: "400", color: "#000" }}>{moment(item.createdAt).fromNow()}</Text>
+                        </View>
                       </TouchableOpacity>
                       <Ionicons style={{ margin: 5 }} name='ios-flag' size={25} />
                     </View>
                     <View>
-                      <TouchableOpacity onPress={() => this.likePost(item)}>
-                        <Image style={styles.postPhoto} source={{ uri: `${item.postPhoto}` }} />
-                      </TouchableOpacity>
+                      <Image style={styles.postPhoto} source={{ uri: `${item.postPhoto}` }} />
                       <LinearGradient colors={['transparent', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.8)']} style={{ position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 10, paddingVertical: 15 }}>
                         <Text style={{ color: "#FFF", fontWeight: "400", fontSize: 20 }}>{item.postDescription}</Text>
                         <View style={{ position: "absolute", right: 10, top: 26 }}>
@@ -76,18 +83,31 @@ class Home extends React.Component {
                         </View>
                       </LinearGradient>
                     </View>
-                    <View style={styles.row}>
+                    <View style={{ ...styles.row, padding: 3 }}>
+                      <TouchableOpacity onPress={() => this.likePost(item)}>
+                        <View style={styles.row}>
+                          <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: 0, marginRight: -3 }}>{item.likes.length}</Text>
+                          <SimpleLineIcons style={{ margin: 7 }} color={liked ? 'orange' : 'black'} name='fire' size={20} />
+                          <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: -3, marginRight: 0 }}>Cravers</Text>
+                        </View>
+                      </TouchableOpacity>
                       <View style={styles.row}>
-                        <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: 0, marginRight: 0 }}>{item.likes.length}</Text>
-                        <SimpleLineIcons style={{ margin: 7 }} color={liked ? 'orange' : 'black'} name='fire' size={20} />
+                        <View style={styles.row}>
+                          <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: -3, marginRight: 0 }}>{item.comments.length}</Text>
+                          <TouchableOpacity onPress={() => this.props.navigation.navigate('Comment', item)}>
+                            <SimpleLineIcons style={{ margin: 7 }} name='bubble' size={20} />
+                          </TouchableOpacity>
+                          <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: -3, marginRight: 0 }}>Comments</Text>
+                        </View>
                       </View>
                       <View style={styles.row}>
-                        <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: 0, marginRight: 0 }}>{item.comments.length}</Text>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Comment', item)}>
-                          <SimpleLineIcons style={{ margin: 7 }} name='bubble' size={20} />
+                        <TouchableOpacity onPress={() => this._pinPost(item)}>
+                          <View style={styles.row}>
+                            <MaterialIcons style={{ marginTop: 7 }} name='library-add' size={23} />
+                            <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: 3, marginRight: 1 }}>Save</Text>
+                          </View>
                         </TouchableOpacity>
                       </View>
-                      <SimpleLineIcons style={{ marginTop: 7 }} name='paper-clip' size={20} />
                     </View>
                   </View>
                 )
