@@ -4,6 +4,7 @@ import db from '../config/firebase';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import md5 from 'react-native-md5';
 import { getPosts } from './post';
 import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS, UPDATE_PROFILE_PICTURE, GET_PROFILE } from '../types';
 
@@ -179,6 +180,7 @@ export const getAllUsers = () => async (dispatch, getState) => {
 
 export const signup = () => (dispatch, getState) => {
 	Keyboard.dismiss();
+	const hex_md5v = md5.hex_md5(Date.now() + "");
 	dispatch({ type: LOADING, payload: true })
 	const { email, password, username, bio, token } = getState().user;
 	if (email === undefined || password === undefined || username === undefined || bio === undefined) {
@@ -193,7 +195,7 @@ export const signup = () => (dispatch, getState) => {
 				email: email,
 				username: username,
 				bio: bio,
-				photo: 'https://firebasestorage.googleapis.com/v0/b/crav-eat-full-stack.appspot.com/o/pp.jpg?alt=media&token=8a48ae8e-730e-4213-9ce7-e8e295898921',
+				photo: `http://gravatar.com/avatar/${hex_md5v}?d=identicon`,
 				token: token ? token : null,
 				followers: [],
 				following: [],
@@ -259,6 +261,7 @@ export const followUser = (user) => async (dispatch, getState) => {
 			type: 'FOLLOWER',
 		})
 		dispatch(getUser(user.uid))
+		dispatch(getUser(uid))
 	} catch (e) {
 		console.error(e)
 	}
@@ -274,6 +277,7 @@ export const unfollowUser = (user) => async (dispatch, getState) => {
 			following: firebase.firestore.FieldValue.arrayRemove(user.uid)
 		})
 		dispatch(getUser(user.uid))
+		dispatch(getUser(uid))
 	} catch (e) {
 		console.error(e)
 	}

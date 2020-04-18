@@ -93,11 +93,13 @@ class Home extends React.Component {
                       </TouchableOpacity>
                       <View style={styles.row}>
                         <View style={styles.row}>
-                          <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: -3, marginRight: 0 }}>{item.comments.length}</Text>
                           <TouchableOpacity onPress={() => this.props.navigation.navigate('Comment', item)}>
-                            <SimpleLineIcons style={{ margin: 7 }} name='bubble' size={20} />
+                            <View style={styles.row}>
+                              <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: -3, marginRight: 0 }}>{item.comments.length}</Text>
+                              <SimpleLineIcons style={{ margin: 7 }} name='bubble' size={20} />
+                              <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: -3, marginRight: 0 }}>Comments</Text>
+                            </View>
                           </TouchableOpacity>
-                          <Text style={{ fontSize: 15, marginTop: 7, marginBottom: 7, marginLeft: -3, marginRight: 0 }}>Comments</Text>
                         </View>
                       </View>
                       <View style={styles.row}>

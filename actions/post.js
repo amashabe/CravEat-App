@@ -135,15 +135,17 @@ export const unlikePost = (post) => async (dispatch, getState) => {
 	}
 }
 
-export const getComments = (post) => {
-	return dispatch => {
-		dispatch({ type: GET_COMMENTS, payload: orderBy(post.comments, 'createdAt', 'desc') })
-	}
+export const getNextPropsComments = (comments) => dispatch => {
+	dispatch({ type: GET_COMMENTS, payload: orderBy(comments, 'createdAt', 'desc') })
+}
+
+export const getComments = (post) => dispatch => {
+	dispatch({ type: GET_COMMENTS, payload: orderBy(post.comments, 'createdAt', 'desc') })
 }
 
 export const addComment = (text, post) => async (dispatch, getState) => {
 	const { uid, photo, username } = getState().user
-	let comments = cloneDeep(getState().post.comments.reverse())
+	let newComments = cloneDeep(getState().post.comments.reverse())
 	try {
 		const comment = {
 			comment: text,
@@ -160,14 +162,13 @@ export const addComment = (text, post) => async (dispatch, getState) => {
 		comment.uid = post.uid
 		comment.type = 'COMMENT'
 		comment.read = false
-		comments.push(comment)
+		newComments.push(comment)
+
+		dispatch({ type: GET_COMMENTS, payload: newComments.reverse() })
 
 		if (uid !== post.uid) {
 			db.collection('notifications').doc().set(comment)
 		}
-
-		dispatch({ type: GET_COMMENTS, payload: comments.reverse() })
-		dispatch(getPosts())
 	} catch (e) {
 		console.error(e)
 	}
