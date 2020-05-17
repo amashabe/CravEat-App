@@ -52,7 +52,6 @@ export const uploadPost = () => async (dispatch, getState) => {
 		upload.id = ref.id
 		ref.set(upload)
 		newPosts.push(upload)
-		dispatch({ type: GET_POSTS, payload: newPosts.reverse() })
 		dispatch({ type: UPDATE_PHOTO, payload: '' })
 		dispatch({ type: UPDATE_LOCATION, payload: '' })
 		dispatch({ type: UPDATE_DESCRIPTION, payload: '' })
@@ -62,15 +61,16 @@ export const uploadPost = () => async (dispatch, getState) => {
 	}
 }
 
-export const getPosts = () => async (dispatch, getState) => {
+export const getPosts = () => (dispatch, getState) => {
 	try {
-		const posts = await db.collection('posts').get()
-
-		let array = []
-		posts.forEach((post) => {
-			array.push(post.data())
+		db.collection('posts').onSnapshot((querySnapshot) => {
+			console.log('updated')
+			let array = []
+			querySnapshot.forEach((post) => {
+				array.push(post.data())
+			})
+			dispatch({ type: GET_POSTS, payload: orderBy(array, 'createdAt', 'desc') })
 		})
-		dispatch({ type: GET_POSTS, payload: orderBy(array, 'createdAt', 'desc') })
 	} catch (e) {
 		alert(e)
 	}

@@ -14,6 +14,16 @@ class Home extends React.Component {
     this.props.getPosts();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.post != null) {
+      if(prevProps.post.feed.length != this.props.post.feed.length){
+        console.log('Shoud Update')
+        this.props.getPosts();
+      }
+    }
+
+  }
+
   likePost = (post) => {
     const { uid } = this.props.user
     if (post.likes.includes(uid)) {

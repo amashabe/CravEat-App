@@ -13,7 +13,6 @@ class Comment extends React.Component {
     if (nextProps.post.comments.length != this.props.post.feed[0].comments.length) {
       this.props.getNextPropsComments(nextProps.post.comments)
     }
-
   }
 
   componentDidMount = () => {
