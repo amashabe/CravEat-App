@@ -6,7 +6,6 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import md5 from 'react-native-md5';
 import { getPosts } from './post';
-import { trackAuth } from '../events/TrackEvent';
 import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS, UPDATE_PROFILE_PICTURE, GET_PROFILE } from '../types';
 
 export const updateEmail = (email) => {
@@ -113,11 +112,6 @@ export const login = () => async (dispatch, getState) => {
 	const { email, password, token } = getState().user;
 	if (email !== undefined && password !== undefined) {
 		firebase.auth().signInWithEmailAndPassword(email, password).then(response => {
-			const user = {
-				email: email,
-				password: password
-			}
-			trackSignUp('signin', user)
 			dispatch({ type: LOADING, payload: false });
 			dispatch({ type: SET_ERROR, payload: null })
 			dispatch(getUser(response.user.uid));
@@ -208,7 +202,6 @@ export const signup = () => (dispatch, getState) => {
 				createdAt: new Date().getTime(),
 			}
 			db.collection('users').doc(response.user.uid).set(user)
-			trackSignUp('signup', user)
 			dispatch({ type: LOADING, payload: false })
 			dispatch({ type: SIGN_IN, payload: user })
 		}).catch(error => {
