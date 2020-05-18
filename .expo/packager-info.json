@@ -1,9 +1,9 @@
 {
   "packagerPort": 19001,
-  "packagerPid": 8596,
+  "packagerPid": 7856,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://ys-qim.amashabe.craveat-app.exp.direct",
   "packagerNgrokUrl": "https://packager.ys-qim.amashabe.craveat-app.exp.direct",
-  "ngrokPid": 12400
+  "ngrokPid": 5500
 }

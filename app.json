@@ -27,7 +27,8 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.atandm.craveat",
+      "package": "com.mypackage.coolapp",
+      "googleServicesFile": "./google-services.json",
       "versionCode": 1
     }
   }

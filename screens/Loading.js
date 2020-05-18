@@ -11,6 +11,8 @@ import AppStatusBar from '../components/AppStatusBar';
 import axios from 'axios';
 import styles from '../styles';
 import { SIGN_IN } from '../types';
+import * as Analytics from 'expo-firebase-analytics';
+
 const HERE_MAPS_API = 'https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json';
 const HERE_MAPS_KEY_API = 'EGd7qrUMgE5euGI08Uzs6CbA8CG-MEaiNvHE97uThlg';
 

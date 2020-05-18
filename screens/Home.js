@@ -10,15 +10,17 @@ import AppStatusBar from '../components/AppStatusBar';
 import styles from '../styles';
 
 class Home extends React.Component {
+  state = {
+    refreshTab: false
+  }
   componentDidMount() {
     this.props.getPosts();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.post != null) {
-      if(prevProps.post.feed.length != this.props.post.feed.length){
-        console.log('Shoud Update')
-        this.props.getPosts();
+      if (prevProps.post.feed.length != this.props.post.feed.length) {
+        this.props.post.feed[0].uid === this.props.user.uid ? this.getNewPosts() : this.setState({ refreshTab: true })
       }
     }
 
@@ -40,6 +42,7 @@ class Home extends React.Component {
   }
 
   getNewPosts = () => {
+    this.setState({ refreshTab: false })
     this.props.getPosts();
   }
 
@@ -65,6 +68,11 @@ class Home extends React.Component {
         <SafeAreaView style={[styles.bottomSafeArea]}>
           <AppStatusBar backgroundColor='#ff741a' barStyle="light-content" />
           <View style={{ flex: 1, backgroundColor: '#fff' }}>
+            {this.state.refreshTab ? <View style={{ flex: 1, alignItems: 'center' }}>
+              <TouchableOpacity style={{ position: 'absolute', top: 10, backgroundColor: '#ff741a', elevation: 4, zIndex: 10, }} onPress={this.getNewPosts}>
+                <Text>Tab to refresh</Text>
+              </TouchableOpacity>
+            </View> : null}
             <FlatList
               onRefresh={() => this.getNewPosts()}
               refreshing={false}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "330576647671",
+    "firebase_url": "https://crav-eat-full-stack.firebaseio.com",
+    "project_id": "crav-eat-full-stack",
+    "storage_bucket": "crav-eat-full-stack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330576647671:android:5a73184efa0c82ae618af2",
+        "android_client_info": {
+          "package_name": "com.atandm.craveat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330576647671-3hrcl4g0pk7t34japkugru142r7gcunl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1TFR_CEIK2SyOy-Fd03rCtRF1Kpha15g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330576647671-3hrcl4g0pk7t34japkugru142r7gcunl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
