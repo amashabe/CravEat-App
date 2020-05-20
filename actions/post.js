@@ -26,7 +26,6 @@ export const updateLocation = (text) => {
 
 export const getPost = (postId, navigate) => async (dispatch) => {
 	const post = await db.collection('posts').doc(postId).get()
-
 	dispatch({ type: GET_POST, payload: post.data() })
 	navigate.navigate('Comment', post.data())
 }
@@ -64,7 +63,6 @@ export const uploadPost = () => async (dispatch, getState) => {
 export const getPosts = () => (dispatch, getState) => {
 	try {
 		db.collection('posts').onSnapshot((querySnapshot) => {
-			console.log('updated')
 			let array = []
 			querySnapshot.forEach((post) => {
 				array.push(post.data())
@@ -112,7 +110,6 @@ export const likePost = (post) => (dispatch, getState) => {
 				read: false
 			})
 		}
-
 		dispatch(getPosts())
 	} catch (e) {
 		alert(e)
@@ -135,12 +132,15 @@ export const unlikePost = (post) => async (dispatch, getState) => {
 	}
 }
 
-export const getNextPropsComments = (comments) => dispatch => {
-	dispatch({ type: GET_COMMENTS, payload: orderBy(comments, 'createdAt', 'desc') })
-}
-
 export const getComments = (post) => dispatch => {
-	dispatch({ type: GET_COMMENTS, payload: orderBy(post.comments, 'createdAt', 'desc') })
+	try {
+		db.collection('posts').doc(post.id).onSnapshot((querySnapshot) => {
+			dispatch({ type: GET_COMMENTS, payload: orderBy(querySnapshot.data().comments, 'createdAt', 'desc') })
+		})
+	} catch (error) {
+		console.log(error)
+	}
+
 }
 
 export const addComment = (text, post) => async (dispatch, getState) => {
@@ -163,8 +163,6 @@ export const addComment = (text, post) => async (dispatch, getState) => {
 		comment.type = 'COMMENT'
 		comment.read = false
 		newComments.push(comment)
-
-		dispatch({ type: GET_COMMENTS, payload: newComments.reverse() })
 
 		if (uid !== post.uid) {
 			db.collection('notifications').doc().set(comment)

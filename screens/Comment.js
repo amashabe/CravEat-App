@@ -2,17 +2,11 @@ import React from 'react';
 import styles from '../styles'
 import { connect } from 'react-redux'
 import { Text, View, TextInput, FlatList, Image, KeyboardAvoidingView, StatusBar } from 'react-native';
-import { addComment, getComments, getNextPropsComments } from '../actions/post';
+import { addComment, getComments } from '../actions/post';
 
 class Comment extends React.Component {
   state = {
     comment: ''
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.post.comments.length != this.props.post.feed[0].comments.length) {
-      this.props.getNextPropsComments(nextProps.post.comments)
-    }
   }
 
   componentDidMount = () => {
@@ -21,9 +15,7 @@ class Comment extends React.Component {
   }
 
   postComment = () => {
-
     const { params } = this.props.navigation.state
-    console.log(params)
     this.props.addComment(this.state.comment, params)
     this.setState({ comment: '' })
   }
@@ -63,4 +55,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { addComment, getComments, getNextPropsComments })(Comment)
+export default connect(mapStateToProps, { addComment, getComments })(Comment)

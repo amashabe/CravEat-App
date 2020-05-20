@@ -28,7 +28,6 @@
     },
     "android": {
       "package": "com.mypackage.coolapp",
-      "googleServicesFile": "./google-services.json",
       "versionCode": 1
     }
   }

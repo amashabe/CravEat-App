@@ -16,16 +16,7 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.getPosts();
   }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.post != null) {
-      if (prevProps.post.feed.length != this.props.post.feed.length) {
-        this.props.post.feed[0].uid === this.props.user.uid ? this.getNewPosts() : this.setState({ refreshTab: true })
-      }
-    }
-
-  }
-
+  
   likePost = (post) => {
     const { uid } = this.props.user
     if (post.likes.includes(uid)) {
@@ -87,7 +78,7 @@ class Home extends React.Component {
                         <Image style={styles.roundImage} source={{ uri: `${item.photo}` }} />
                         <View style={{ left: 4 }}>
                           <Text>{item.username}</Text>
-                          <Text style={{ fontSize: 10, fontWeight: "400", color: "#000" }}>{moment(item.createdAt).fromNow()}</Text>
+                          <Text style={{ fontSize: 10, fontWeight: "400", color: "#000" }}>{item.postLocation.name}</Text>
                         </View>
                       </TouchableOpacity>
                       <Ionicons style={{ margin: 5 }} name='ios-flag' size={25} />
