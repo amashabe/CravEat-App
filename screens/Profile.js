@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, StatusBar, ActivityIndicator } from 'react-native';
-import { signOut, updatePP, followUser, unfollowUser } from '../actions/user';
+import { signOut, updatePP, followUser, unfollowUser, getUser } from '../actions/user';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Menu } from 'react-native-paper';
@@ -124,4 +124,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { signOut, updatePP, followUser, unfollowUser })(Profile)
+export default connect(mapStateToProps, { signOut, updatePP, followUser, unfollowUser, getUser })(Profile)

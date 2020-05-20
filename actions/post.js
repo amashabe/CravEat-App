@@ -128,7 +128,7 @@ export const unlikePost = (post) => async (dispatch, getState) => {
 		})
 		dispatch(getPosts())
 	} catch (e) {
-		console.error(e)
+		console.log(e)
 	}
 }
 
@@ -168,6 +168,6 @@ export const addComment = (text, post) => async (dispatch, getState) => {
 			db.collection('notifications').doc().set(comment)
 		}
 	} catch (e) {
-		console.error(e)
+		console.log(e)
 	}
 }

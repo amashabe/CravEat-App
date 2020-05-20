@@ -261,9 +261,9 @@ export const followUser = (user) => async (dispatch, getState) => {
 			type: 'FOLLOWER',
 		})
 		dispatch(getUser(user.uid))
-		dispatch(getUser(uid))
+		// dispatch(getUser(uid))
 	} catch (e) {
-		console.error(e)
+		console.log(e)
 	}
 }
 
@@ -277,8 +277,8 @@ export const unfollowUser = (user) => async (dispatch, getState) => {
 			following: firebase.firestore.FieldValue.arrayRemove(user.uid)
 		})
 		dispatch(getUser(user.uid))
-		dispatch(getUser(uid))
+		// dispatch(getUser(uid))
 	} catch (e) {
-		console.error(e)
+		console.log(e)
 	}
 }
