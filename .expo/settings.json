@@ -1,6 +1,6 @@
 {
   "urlRandomness": "3s-pgq",
-  "hostType": "tunnel",
+  "hostType": "lan",
   "lanType": "ip",
   "dev": true,
   "minify": false,

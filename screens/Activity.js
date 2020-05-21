@@ -60,6 +60,20 @@ class Activity extends React.Component {
                         <Image style={{ width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: '#DCDCDC' }} source={{ uri: item.postPhoto }} />
                     </TouchableOpacity>
                 )
+            case 'FOLLOWER':
+                return (
+                    <TouchableOpacity onPress={() => alert(item.postId)} style={{ alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', backgroundColor: item.read ? 'transparent' : '#DCDCDC' }}>
+                        <Image style={{ width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: item.read ? '#adadad' : '#DCDCDC' }} source={{ uri: item.followerPhoto }} />
+                        <View style={{ flex: 1, backgroundColor: 'transparent', alignItems: 'flex-start' }}>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{ fontWeight: 'bold', }}>{item.followerName}</Text>
+                                <Text style={{ color: '#000' }}> Started Following You.</Text>
+                            </View>
+                            <Text style={{ color: '#000', fontSize: 10 }}>{moment(item.createdAt).fromNow()}</Text>
+                        </View>
+                        {/* <Image style={{ width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: '#DCDCDC' }} source={{ uri: item.postPhoto }} /> */}
+                    </TouchableOpacity>
+                )
             default: null
         }
     }

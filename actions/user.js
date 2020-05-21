@@ -72,7 +72,7 @@ export const updatePP = () => async (dispatch, getState) => {
 			}, () => {
 				uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
 					db.collection('users').doc(uid).update({ photo: downloadURL })
-					dispatch(updateData(downloadURL, uid))
+					dispatch(batchUpdate(downloadURL, uid))
 					dispatch({ type: LOADING, payload: false })
 				}
 				);
@@ -80,7 +80,7 @@ export const updatePP = () => async (dispatch, getState) => {
 	}
 }
 
-export const updateData = (downloadURL, uid) => async (dispatch) => {
+export const batchUpdate = (downloadURL, uid) => async (dispatch, getState) => {
 	try {
 		const batch = db.batch();
 		const posts = await db.collection('posts').get()
@@ -90,16 +90,17 @@ export const updateData = (downloadURL, uid) => async (dispatch) => {
 			if (post.data().uid === uid) {
 				array.push(post.data())
 			}
-
 		})
+
 		array.map(doc => {
 			const post = db.doc(`/posts/${doc.id}`);
+			console.log(doc)
 			batch.update(post, { photo: downloadURL });
 		})
 		batch.commit();
 		dispatch({ type: UPDATE_PROFILE_PICTURE, payload: downloadURL })
 		dispatch(getPosts())
-		dispatch(getUser(uid))
+		dispatch(getUser(uid, 'PROFILE'))
 	} catch (error) {
 		alert(error)
 	}
@@ -130,16 +131,18 @@ export const login = () => async (dispatch, getState) => {
 export const getUser = (uid, type) => async (dispatch, getState) => {
 	const { token } = getState().user
 	try {
-		const user = await db.collection('users').doc(uid).get()
-		if (type === SIGN_IN) {
-			token ? await db.collection('users').doc(uid).update({ token: token }) : null
-			dispatch({ type: SIGN_IN, payload: user.data() })
-		}
-		else {
-			dispatch({ type: GET_PROFILE, payload: user.data() })
-		}
-	} catch (e) {
-		alert(e)
+		db.collection('users').doc(uid).onSnapshot((querySnapshot) => {
+			if (token != null) {
+				db.collection('users').doc(uid).update({ token: token })
+			}
+			if (type === SIGN_IN) {
+				dispatch({ type: SIGN_IN, payload: querySnapshot.data() })
+			}
+
+			dispatch({ type: GET_PROFILE, payload: querySnapshot.data() })
+		})
+	} catch (error) {
+		console.log(error)
 	}
 }
 
@@ -150,19 +153,6 @@ export const signOut = () => dispatch => {
 	dispatch({ type: UPDATE_USERNAME, payload: '' })
 	dispatch({ type: UPDATE_EMAIL, payload: '' })
 	dispatch({ type: UPDATE_PASSWORD, payload: '' })
-}
-
-export const updateUser = () => async (dispatch, getState) => {
-	const { uid, username, photo, bio } = getState().user;
-	try {
-		db.collection('users/').doc(uid).update({
-			username: username,
-			bio: bio,
-			photo: photo
-		})
-	} catch (e) {
-		alert(e)
-	}
 }
 
 export const getAllUsers = () => async (dispatch, getState) => {
@@ -214,7 +204,6 @@ export const signup = () => (dispatch, getState) => {
 
 }
 
-
 export const updateUserDetails = (navigate) => async (dispatch, getState) => {
 	dispatch({ type: LOADING, payload: true })
 	const { username, bio, uid } = getState().user;
@@ -260,8 +249,6 @@ export const followUser = (user) => async (dispatch, getState) => {
 			createdAt: new Date().getTime(),
 			type: 'FOLLOWER',
 		})
-		dispatch(getUser(user.uid))
-		// dispatch(getUser(uid))
 	} catch (e) {
 		console.log(e)
 	}
@@ -276,9 +263,20 @@ export const unfollowUser = (user) => async (dispatch, getState) => {
 		db.collection('users').doc(uid).update({
 			following: firebase.firestore.FieldValue.arrayRemove(user.uid)
 		})
-		dispatch(getUser(user.uid))
-		// dispatch(getUser(uid))
 	} catch (e) {
 		console.log(e)
 	}
 }
+
+// export const updateUser = () => async (dispatch, getState) => {
+// 	const { uid, username, photo, bio } = getState().user;
+// 	try {
+// 		db.collection('users/').doc(uid).update({
+// 			username: username,
+// 			bio: bio,
+// 			photo: photo
+// 		})
+// 	} catch (e) {
+// 		alert(e)
+// 	}
+// }
