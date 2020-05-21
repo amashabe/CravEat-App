@@ -94,8 +94,14 @@ export const batchUpdate = (downloadURL, uid) => async (dispatch, getState) => {
 
 		array.map(doc => {
 			const post = db.doc(`/posts/${doc.id}`);
-			console.log(doc)
 			batch.update(post, { photo: downloadURL });
+		})
+
+		posts.forEach((post, i) => {
+			post.data().comments.map((comment, i) => {
+				const batchComment = db.doc(`/posts/${post.id}/comments[${i}].${comment.commenterId}`)
+				batch.update(batchComment, {commenterPhoto: downloadURL})
+			})
 		})
 		batch.commit();
 		dispatch({ type: UPDATE_PROFILE_PICTURE, payload: downloadURL })
