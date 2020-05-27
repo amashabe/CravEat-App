@@ -167,18 +167,23 @@ export const login = () => async (dispatch, getState) => {
 export const getUser = (uid, type) => async (dispatch, getState) => {
   const { token } = getState().user;
   try {
-    db.collection("users")
-      .doc(uid)
-      .onSnapshot((querySnapshot) => {
-        if (token != null) {
-          db.collection("users").doc(uid).update({ token: token });
-        }
-        if (type === SIGN_IN) {
-          dispatch({ type: SIGN_IN, payload: querySnapshot.data() });
-        }
+    const users = await db.collection("users").get();
+    users.forEach((user) => {
+      if (user.data().token === token && user.data().uid != uid) {
+        db.collection("users").doc(user.data().uid).update({ token: null });
+      } else if (user.data().uid === uid) {
+        db.collection("users")
+          .doc(uid)
+          .onSnapshot((querySnapshot) => {
+            db.collection("users").doc(uid).update({ token: token });
+            if (type === SIGN_IN) {
+              dispatch({ type: SIGN_IN, payload: querySnapshot.data() });
+            }
 
-        dispatch({ type: GET_PROFILE, payload: querySnapshot.data() });
-      });
+            dispatch({ type: GET_PROFILE, payload: querySnapshot.data() });
+          });
+      }
+    });
   } catch (error) {
     console.log(error);
   }

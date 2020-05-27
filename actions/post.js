@@ -155,21 +155,10 @@ export const unlikePost = (post) => async (dispatch, getState) => {
   }
 };
 
-export const getComments = (post) => (dispatch) => {
-  try {
-    db.collection("comments").onSnapshot((querySnapshot) => {
-      const array = [];
-      querySnapshot.forEach((doc) => {
-          array.push(doc.data());
-      });
-      dispatch({
-        type: GET_COMMENTS,
-        payload: orderBy(array, "createdAt", "desc"),
-      });
+export const getComments = (post) => async (dispatch) => {
+  db.collection("posts").doc(post.id).onSnapshot((querySnapshot) => {
+      dispatch({type: "GET_COMMENTS",payload: orderBy(querySnapshot.data().comments, "date", "desc")});
     });
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 export const addComment = (text, post) => async (dispatch, getState) => {
@@ -184,7 +173,7 @@ export const addComment = (text, post) => async (dispatch, getState) => {
       createdAt: new Date().getTime(),
     };
     const ref = await db.collection("comments").doc();
-    comment.postId = post.id; 
+    comment.postId = post.id;
     comment.id = ref.id;
     ref.set(comment);
     db.collection("posts")

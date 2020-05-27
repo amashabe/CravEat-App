@@ -6,7 +6,7 @@ import { addComment, getComments } from '../actions/post';
 
 class Comment extends React.Component {
   state = {
-    comment: ''
+  	comment: ''
   }
 
   componentDidMount = () => {
@@ -15,11 +15,10 @@ class Comment extends React.Component {
   }
 
   postComment = () => {
-    const { params } = this.props.navigation.state
-    this.props.addComment(this.state.comment, params)
-    this.setState({ comment: '' })
+  	const { params } = this.props.navigation.state
+  	this.props.addComment(this.state.comment, params)
+  	this.setState({comment: ''})
   }
-
 
   render() {
     return (
@@ -28,7 +27,7 @@ class Comment extends React.Component {
           keyExtractor={(item) => JSON.stringify(item.createdAt)}
           data={this.props.post.comments}
           renderItem={({ item }) => (
-            <View style={{ justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap' }}>
+            <View key={`${item.id}`} style={{ justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap' }}>
               <Image style={{ width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: '#adadad' }} source={{ uri: item.commenterPhoto }} />
               <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'flex-start' }}>
                 <Text>{item.commenterName}</Text>
