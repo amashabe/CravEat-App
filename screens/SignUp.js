@@ -4,14 +4,45 @@ import { connect } from 'react-redux'
 import { updateEmail, updatePassword, updateUsername, updateBio, signup } from '../actions/user';
 import Hr from "react-native-hr-component";
 import AppStatusBar from '../components/AppStatusBar';
-import styles from '../styles'
-const { width } = Dimensions.get('window');
+import styles from '../styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {  updateLocation } from '../actions/post';
+import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
+
+const {width, height} = Dimensions.get('window');
+const GOOGLE_API = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+const googleApiKey = 'AIzaSyAgjhZeIV4iIBe4cDyudFsyVGgVFK3P38U';
 
 class SignUp extends React.Component {
 	state = {
-		showPassword: true
+		showPassword: true,
+		showModal: false,
+        locations: []
 	}
+	setLocation = (location) => {
+        const place = {
+            name: location.name,
+            coords: {
+                lat: location.geometry.location.lat,
+                lng: location.geometry.location.lng
+            }
+        }
+        this.setState({ showModal: false })
+        this.props.updateLocation(place)
+    }
+
+    getLocations = async () => {
+        this.setState({ showModal: true })
+        const permission = await Permissions.askAsync(Permissions.LOCATION)
+        if (permission.status === 'granted') {
+            const location = await Location.getCurrentPositionAsync()
+            const url = `${GOOGLE_API}?location=${location.coords.latitude},${location.coords.longitude}&rankby=distance&key=${googleApiKey}`
+            const response = await fetch(url)
+            const data = await response.json()
+            this.setState({ locations: data.results })
+        }
+    }
 	render() {
 		const { showPassword } = this.state;
 		return (
@@ -77,6 +108,9 @@ class SignUp extends React.Component {
 							onChangeText={input => this.props.updateBio(input)}
 							placeholder='Bio'
 						/>
+						  <TouchableOpacity style={styles.border} onPress={this.getLocations}>
+							<Text style={styles.gray}>{this.props.post.location ? this.props.post.location.name : 'Add a Location'}</Text>
+						</TouchableOpacity>
 						{
 							this.props.UI.errors ? <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'red', padding: 8 }}>{this.props.UI.errors}</Text> : null
 						}
@@ -108,4 +142,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, { updateEmail, updatePassword, updateUsername, updateBio, signup })(SignUp)
+export default connect(mapStateToProps, { updateEmail, updatePassword, updateUsername, updateBio, signup, updateLocation })(SignUp)

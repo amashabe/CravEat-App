@@ -19,6 +19,7 @@ import {
   GET_ALL_USERS,
   UPDATE_PROFILE_PICTURE,
   GET_PROFILE,
+  UPDATE_LOCATION
 } from "../types";
 
 export const updateEmail = (email) => {
@@ -51,6 +52,10 @@ export const updateBio = (bio) => {
     type: UPDATE_BIO,
     payload: bio,
   };
+};
+
+export const updateLocation = (text) => {
+  return { type: UPDATE_LOCATION, payload: text };
 };
 
 export const updatePP = () => async (dispatch, getState) => {
@@ -215,7 +220,7 @@ export const signup = () => (dispatch, getState) => {
   Keyboard.dismiss();
   const hex_md5v = md5.hex_md5(Date.now() + "");
   dispatch({ type: LOADING, payload: true });
-  const { email, password, username, bio, token } = getState().user;
+  const { email, password, username, bio, token, location } = getState().user;
   if (
     email === undefined ||
     password === undefined ||
@@ -240,6 +245,7 @@ export const signup = () => (dispatch, getState) => {
           followers: [],
           following: [],
           createdAt: new Date().getTime(),
+          location: location
         };
         db.collection("users").doc(response.user.uid).set(user);
         dispatch({ type: LOADING, payload: false });
@@ -288,20 +294,27 @@ export const followUser = (user) => async (dispatch, getState) => {
       .update({
         followers: firebase.firestore.FieldValue.arrayUnion(uid),
       });
+
     db.collection("users")
       .doc(uid)
       .update({
         following: firebase.firestore.FieldValue.arrayUnion(user.uid),
       });
-    db.collection("notifications").doc().set({
-      followerId: uid,
-      followerPhoto: photo,
-      followerName: username,
-      uid: user.uid,
-      photo: user.photo,
-      username: user.username,
-      createdAt: new Date().getTime(),
-      type: "FOLLOWER",
+
+    const notifications = await db.collection("notifications").get();
+    notifications.forEach((notification) => {
+      if (notification.data().followerId != uid && notification.data().uid != user.uid) {
+        db.collection("notifications").doc().set({
+          followerId: uid,
+          followerPhoto: photo,
+          followerName: username,
+          uid: user.uid,
+          photo: user.photo,
+          username: user.username,
+          createdAt: new Date().getTime(),
+          type: "FOLLOWER",
+        });
+      }
     });
   } catch (e) {
     console.log(e);
@@ -325,16 +338,3 @@ export const unfollowUser = (user) => async (dispatch, getState) => {
     console.log(e);
   }
 };
-
-// export const updateUser = () => async (dispatch, getState) => {
-// 	const { uid, username, photo, bio } = getState().user;
-// 	try {
-// 		db.collection('users/').doc(uid).update({
-// 			username: username,
-// 			bio: bio,
-// 			photo: photo
-// 		})
-// 	} catch (e) {
-// 		alert(e)
-// 	}
-// }
