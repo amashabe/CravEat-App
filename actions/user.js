@@ -221,12 +221,7 @@ export const signup = () => (dispatch, getState) => {
   const hex_md5v = md5.hex_md5(Date.now() + "");
   dispatch({ type: LOADING, payload: true });
   const { email, password, username, bio, token, location } = getState().user;
-  if (
-    email === undefined ||
-    password === undefined ||
-    username === undefined ||
-    bio === undefined
-  ) {
+  if (email === undefined || password === undefined || username === undefined || bio === undefined || location.name === undefined) {
     dispatch({ type: LOADING, payload: false });
     dispatch({ type: SET_ERROR, payload: "Fill all required fields" });
   } else if (email !== undefined && password !== undefined) {
@@ -245,7 +240,7 @@ export const signup = () => (dispatch, getState) => {
           followers: [],
           following: [],
           createdAt: new Date().getTime(),
-          location: location
+          location: location.name
         };
         db.collection("users").doc(response.user.uid).set(user);
         dispatch({ type: LOADING, payload: false });
