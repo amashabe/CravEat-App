@@ -8,6 +8,7 @@ import { getPosts, likePost, unlikePost } from '../actions/post';
 import { getUser } from '../actions/user';
 import AppStatusBar from '../components/AppStatusBar';
 import styles from '../styles';
+import { GET_PROFILE } from '../types';
 
 class Home extends React.Component {
   state = {
@@ -16,7 +17,7 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.getPosts();
   }
-  
+
   likePost = (post) => {
     const { uid } = this.props.user
     if (post.likes.includes(uid)) {
@@ -26,9 +27,13 @@ class Home extends React.Component {
     }
   }
 
-  _goToProfile = (uid) => {
+  _goToProfile = async (uid) => {
+    console.log(uid)
     if (uid === this.props.user.uid) {
       this.props.navigation.navigate('MyProfile')
+    } else if (uid !== this.props.user.uid) {
+      await this.props.getUser(uid, GET_PROFILE)
+      this.props.navigation.navigate('Profile')
     }
   }
 

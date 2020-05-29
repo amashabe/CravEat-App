@@ -48,7 +48,7 @@ class UserDetails extends Component {
                 <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ paddingLeft: width * 0.06, fontWeight: 'bold' }}>Location</Text>
-                        <Text style={{ paddingLeft: width * 0.16, }}>{user.location.name}</Text>
+                        <Text style={{ paddingLeft: width * 0.16, }}>{user.location}</Text>
                     </View>
                 </View>
                 <View style={{ paddingTop: 15, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DCDCDC' }}>

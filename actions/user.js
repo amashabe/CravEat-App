@@ -117,15 +117,11 @@ export const login = () => async (dispatch, getState) => {
   dispatch({ type: SET_ERROR, payload: null });
   const { email, password, token } = getState().user;
   if (email !== undefined && password !== undefined) {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then((response) => {
         dispatch({ type: LOADING, payload: false });
         dispatch({ type: SET_ERROR, payload: null });
-        dispatch(getUser(response.user.uid));
-      })
-      .catch((error) => {
+        dispatch(getUser(response.user.uid, SIGN_IN));
+      }).catch((error) => {
         dispatch({ type: LOADING, payload: false });
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -139,28 +135,26 @@ export const login = () => async (dispatch, getState) => {
 
 export const getUser = (uid, type) => async (dispatch, getState) => {
   const { token } = getState().user;
-  console.log(type)
   try {
-    const users = await db.collection("users").get();
-    users.forEach((user) => {
-      if (user.data().token === token && user.data().uid != uid) {
-        db.collection("users").doc(user.data().uid).update({ token: null });
-      } else if (user.data().uid === uid) {
-        db.collection("users")
-          .doc(uid)
-          .onSnapshot((querySnapshot) => {
-            db.collection("users").doc(uid).update({ token: token });
-            if (type === SIGN_IN) {
-              dispatch({ type: SIGN_IN, payload: querySnapshot.data() });
-            }
-            dispatch({ type: GET_PROFILE, payload: user.data() });
-          });
-      }
-    });
-  } catch (error) {
-    console.log(error);
+    const userQuery = await db.collection('users').doc(uid).get()
+    let user = userQuery.data()
+    if (type === SIGN_IN) {
+      const users = await db.collection("users").get();
+      users.forEach((user) => {
+        if (user.data().token === token && user.data().uid != uid) {
+          db.collection("users").doc(user.data().uid).update({ token: null });
+        } else if (user.data().uid === uid) {
+          db.collection("users").doc(uid).update({ token: token });
+          dispatch({ type: SIGN_IN, payload: user.data() })
+        }
+      });
+    } else {
+      dispatch({ type: GET_PROFILE, payload: user })
+    }
+  } catch (e) {
+    alert(e)
   }
-};
+}
 
 export const signOut = () => (dispatch) => {
   firebase.auth().signOut();
@@ -275,6 +269,7 @@ export const followUser = (user) => async (dispatch, getState) => {
         });
       }
     });
+    dispatch({ type: GET_PROFILE, payload: user })
   } catch (e) {
     console.log(e);
   }
@@ -289,6 +284,7 @@ export const unfollowUser = (user) => async (dispatch, getState) => {
     db.collection("users").doc(uid).update({
       following: firebase.firestore.FieldValue.arrayRemove(user.uid)
     })
+    dispatch({ type: GET_PROFILE, payload: user })
   } catch (e) {
     console.log(e);
   }

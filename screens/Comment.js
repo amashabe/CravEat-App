@@ -5,6 +5,7 @@ import { Text, View, TextInput, FlatList, Image, KeyboardAvoidingView, StatusBar
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 import { addComment, getComments } from '../actions/post';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get("window");
 
 class Comment extends React.Component {
@@ -36,8 +37,8 @@ class Comment extends React.Component {
               </View>
             </LinearGradient>
           </View>
-          <View>
-            <Text>{this.props.navigation.state.params.postRecipe}</Text>
+          <View style={{ padding: 5 }}>
+            <Text style={{ borderColor: 'grey', borderRadius: 5, borderWidth: 1, padding: 5 }}>{this.props.navigation.state.params.postRecipe}</Text>
           </View>
         </>
         <FlatList
@@ -47,18 +48,27 @@ class Comment extends React.Component {
             <View key={`${item.id}`} style={{ justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap' }}>
               <Image style={{ width: 40, height: 40, borderRadius: 20, margin: 10, backgroundColor: '#adadad' }} source={{ uri: item.commenterPhoto }} />
               <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'flex-start' }}>
-                <Text style={{ fontWeight: 'bold', marginTop: 7 }}>{item.commenterName}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontWeight: 'bold', marginTop: 7 }}>{item.commenterName}</Text>
+                  <Text style={{ marginTop: 10, marginLeft: 7, fontSize: 11 }}>{'\u2022'}{moment(item.createdAt).fromNow()}</Text>
+                </View>
                 <Text style={{ paddingRight: 5 }}>{item.comment}</Text>
               </View>
             </View>
           )} />
-        <TextInput
-          style={styles.input}
-          onChangeText={(comment) => this.setState({ comment })}
-          value={this.state.comment}
-          returnKeyType='send'
-          placeholder='Add Comment'
-          onSubmitEditing={this.postComment} />
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity style={{flex: 1, paddingTop: 3}} onPress={() => { }}>
+            <Image style={styles.roundImage} source={{ uri: `${this.props.user.photo}` }} />
+          </TouchableOpacity>
+          <TextInput
+            style={{...styles.input, flex: 5}}
+            onChangeText={(comment) => this.setState({ comment })}
+            value={this.state.comment}
+            returnKeyType='send'
+            placeholder='Add Comment'
+            onSubmitEditing={this.postComment} />
+        </View>
+
       </KeyboardAvoidingView>
     );
   }
