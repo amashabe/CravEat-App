@@ -50,7 +50,7 @@ export const uploadPost = () => async (dispatch, getState) => {
       photo: user.photo,
       username: user.username,
       postRecipe: post.recipe,
-      postLocation: post.location,
+      postLocation: post.location.name,
       createdAt: new Date().getTime(),
       likes: [],
       comments: [],

@@ -6,57 +6,31 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import md5 from "react-native-md5";
 import { getPosts } from "./post";
-import {
-  UPDATE_EMAIL,
-  UPDATE_PASSWORD,
-  UPDATE_USERNAME,
-  UPDATE_BIO,
-  SIGN_IN,
-  SIGN_OUT,
-  LOADING,
-  SET_ERROR,
-  SET_TOKEN,
-  GET_ALL_USERS,
-  UPDATE_PROFILE_PICTURE,
-  GET_PROFILE,
-  UPDATE_LOCATION
-} from "../types";
+import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_USERNAME, UPDATE_BIO, SIGN_IN, SIGN_OUT, LOADING, SET_ERROR, SET_TOKEN, GET_ALL_USERS, UPDATE_PROFILE_PICTURE, GET_PROFILE, UPDATE_LOCATION } from "../types";
 
 export const updateEmail = (email) => {
-  return {
-    type: UPDATE_EMAIL,
-    payload: email,
-  };
-};
+  return { type: UPDATE_EMAIL, payload: email }
+}
 
 export const updateToken = (text) => {
-  return { type: SET_TOKEN, payload: text };
-};
+  return { type: SET_TOKEN, payload: text }
+}
 
 export const updatePassword = (password) => {
-  return {
-    type: UPDATE_PASSWORD,
-    payload: password,
-  };
-};
+  return { type: UPDATE_PASSWORD, payload: password }
+}
 
 export const updateUsername = (username) => {
-  return {
-    type: UPDATE_USERNAME,
-    payload: username,
-  };
-};
+  return { type: UPDATE_USERNAME, payload: username }
+}
 
 export const updateBio = (bio) => {
-  return {
-    type: UPDATE_BIO,
-    payload: bio,
-  };
-};
+  return { type: UPDATE_BIO, payload: bio }
+}
 
 export const updateLocation = (text) => {
-  return { type: UPDATE_LOCATION, payload: text };
-};
+  return { type: UPDATE_LOCATION, payload: text }
+}
 
 export const updatePP = () => async (dispatch, getState) => {
   const { uid } = getState().user;
@@ -83,13 +57,7 @@ export const updatePP = () => async (dispatch, getState) => {
       .put(file, metadata);
     uploadTask.on(
       firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) => {
-        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        if (progress === 0) {
-        }
-        if (progress === 100) {
-        }
-      },
+      (snapshot) => { },
       (error) => {
         alert(error);
       },
@@ -171,6 +139,7 @@ export const login = () => async (dispatch, getState) => {
 
 export const getUser = (uid, type) => async (dispatch, getState) => {
   const { token } = getState().user;
+  console.log(type)
   try {
     const users = await db.collection("users").get();
     users.forEach((user) => {
@@ -184,8 +153,7 @@ export const getUser = (uid, type) => async (dispatch, getState) => {
             if (type === SIGN_IN) {
               dispatch({ type: SIGN_IN, payload: querySnapshot.data() });
             }
-
-            dispatch({ type: GET_PROFILE, payload: querySnapshot.data() });
+            dispatch({ type: GET_PROFILE, payload: user.data() });
           });
       }
     });
@@ -284,17 +252,13 @@ export const updateUserDetails = (navigate) => async (dispatch, getState) => {
 export const followUser = (user) => async (dispatch, getState) => {
   const { uid, photo, username } = getState().user;
   try {
-    db.collection("users")
-      .doc(user.uid)
-      .update({
-        followers: firebase.firestore.FieldValue.arrayUnion(uid),
-      });
+    db.collection("users").doc(user.uid).update({
+      followers: firebase.firestore.FieldValue.arrayUnion(uid)
+    })
 
-    db.collection("users")
-      .doc(uid)
-      .update({
-        following: firebase.firestore.FieldValue.arrayUnion(user.uid),
-      });
+    db.collection("users").doc(uid).update({
+      following: firebase.firestore.FieldValue.arrayUnion(user.uid)
+    })
 
     const notifications = await db.collection("notifications").get();
     notifications.forEach((notification) => {
@@ -319,16 +283,12 @@ export const followUser = (user) => async (dispatch, getState) => {
 export const unfollowUser = (user) => async (dispatch, getState) => {
   const { uid, photo, username } = getState().user;
   try {
-    db.collection("users")
-      .doc(user.uid)
-      .update({
-        followers: firebase.firestore.FieldValue.arrayRemove(uid),
-      });
-    db.collection("users")
-      .doc(uid)
-      .update({
-        following: firebase.firestore.FieldValue.arrayRemove(user.uid),
-      });
+    db.collection("users").doc(user.uid).update({
+      followers: firebase.firestore.FieldValue.arrayRemove(uid)
+    });
+    db.collection("users").doc(uid).update({
+      following: firebase.firestore.FieldValue.arrayRemove(user.uid)
+    })
   } catch (e) {
     console.log(e);
   }

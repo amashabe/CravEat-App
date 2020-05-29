@@ -78,7 +78,7 @@ class Home extends React.Component {
                         <Image style={styles.roundImage} source={{ uri: `${item.photo}` }} />
                         <View style={{ left: 4 }}>
                           <Text>{item.username}</Text>
-                          <Text style={{ fontSize: 10, fontWeight: "400", color: "#000" }}>{item.postLocation.name}</Text>
+                          <Text style={{ fontSize: 10, fontWeight: "400", color: "#000" }}>{item.postLocation}</Text>
                         </View>
                       </TouchableOpacity>
                       <Ionicons style={{ margin: 5 }} name='ios-flag' size={25} />

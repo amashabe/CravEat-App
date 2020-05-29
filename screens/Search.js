@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getAllUsers, getUser } from '../actions/user';
 import AppStatusBar from '../components/AppStatusBar';
 import style from '../styles';
+import { GET_PROFILE } from '../types';
 
 const KEYS_TO_FILTERS = ['username', 'bio'];
 
@@ -24,7 +25,7 @@ class Search extends Component {
   }
 
   goToUser = async (user) => {
-    const response = await this.props.getUser(user.uid, 'GET_PROFILE')
+    const response = await this.props.getUser(user.uid, GET_PROFILE)
     this.props.navigation.navigate('Profile')
   }
 
